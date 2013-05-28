@@ -1,10 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
 using Autofac;
+using Autofac.Extras.DynamicProxy2;
 using Autofac.Integration.Mvc;
+using Castle.DynamicProxy;
 
 namespace WebCrm.Framework
 {
@@ -37,6 +36,8 @@ namespace WebCrm.Framework
 
             func(this._bulider);
 
+            _bulider.RegisterType<ServiceInterceptor>().As<IInterceptor>();
+            
             DependencyResolver.Container = this._bulider.Build();
             return this;
         }
@@ -51,8 +52,7 @@ namespace WebCrm.Framework
         /// </summary>
         /// <param name="assemblies"></param>
         private void RegisterControllers(params  System.Reflection.Assembly[] assemblies)
-        {
-
+        { 
             _bulider.RegisterControllers(assemblies);
         }
         /// <summary>
@@ -61,10 +61,8 @@ namespace WebCrm.Framework
         /// <param name="assemblies"></param>
         private void RegisterAssebbly(params  System.Reflection.Assembly[] assemblies)
         {
-            _bulider.RegisterAssemblyTypes(assemblies).AsImplementedInterfaces().SingleInstance();
-        }
-
-
-
+            _bulider.RegisterAssemblyTypes(assemblies).AsImplementedInterfaces().SingleInstance().
+                EnableClassInterceptors();
+        } 
     }
 }
