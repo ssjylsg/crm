@@ -1,0 +1,19 @@
+﻿<?xml version="1.0"  encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" assembly="WebCX.Model" namespace="WebCX.Model">
+  <class name="WEB_SYS_FUNCTIONS" table="WEB_SYS_FUNCTIONS">
+    <id name="ID" column="ID" type="int">
+      <generator class ="native">
+        <param name="sequence">SEQ_WEBSYSFUNCTIONS</param>
+      </generator>
+    </id>
+    <property name="PARENT_ID" column="PARENT_ID" type="int"  />
+    <property name="FUN_NAME" column="FUN_NAME" type="string"  />
+    <property name="FUN_TYPE" column="FUN_TYPE" type="int"  />
+    <property name="FUN_URL" column="FUN_URL" type="string"  />
+    <property name="FUN_SORT" column="FUN_SORT" type="int"  />
+    <property name="CREATE_LOGIN_ID" column="CREATE_LOGIN_ID" type="int"  />
+    <property name="CREATE_TIME" column="CREATE_TIME" type="DateTime"  />
+    <property name="MODIFIED_TIME" column="MODIFIED_TIME" type="DateTime"  />
+    <property name="DELETED" column="DELETED" type="int"  />
+  </class>
+</hibernate-mapping>

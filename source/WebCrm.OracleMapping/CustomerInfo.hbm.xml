@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" default-access="property" auto-import="true" default-cascade="none" default-lazy="true">
+  <class name="WebCrm.Model.CustomerInfo, WebCrm.Model" table="Crm_Customer_Info">
+    <id name="Id" type="Int32" unsaved-value="0">
+      <column name="ID" length="16" sql-type="int" not-null="true" unique="true" index="Crm_Customer_Info"/>
+      <generator class="assigned" />
+    </id>
+
+    <property name="BirthDate">
+      <column name="BIRTHDAY"/>
+    </property>
+    <property name="Deleted" type="Boolean">
+      <column name="Deleted"  length="1" sql-type="bit" not-null="false"/>
+    </property>
+    <property name="RealName" type="String">
+      <column name="REAL_NAME" length="512" sql-type="nvarchar" not-null="false"/>
+    </property>
+    <property name="IdCard" type="String">
+      <column name="IDCARD" length="64" sql-type="nvarchar" not-null="false"/>
+    </property>
+    <property name="IdCardImg" type="String">
+      <column name="IDCARD_IMG" length="512" sql-type="nvarchar" not-null="false"/>
+    </property>
+    <property name="Realauth" type="bool">
+      <column name="REAL_AUTH" length="4" sql-type="int" not-null="false"/>
+    </property>
+    <property name="Addr" type="String">
+      <column name="ADDR" length="512" sql-type="nvarchar" not-null="false"/>
+    </property>
+    <property name="Tel" type="String">
+      <column name="TEL" length="512" sql-type="nvarchar" not-null="false"/>
+    </property>
+    <property name="Post" type="String">
+      <column name="POST" length="512" sql-type="nvarchar" not-null="false"/>
+    </property>
+    <property name="Email" type="String">
+      <column name="EMAIL" length="64" sql-type="nvarchar" not-null="false"/>
+    </property>
+    <property name="EmailAuth" type="bool">
+      <column name="EMAIL_AUTH" length="4" sql-type="int" not-null="false"/>
+    </property>
+    <property name="Mobile" type="String">
+      <column name="MOBILE" length="64" sql-type="nvarchar" not-null="false"/>
+    </property>
+    <property name="MobileAuth" type="bool">
+      <column name="MOBILE_AUTH" length="4" sql-type="int" not-null="false"/>
+    </property>
+    <property name="Sex" type="String">
+      <column name="SEX" length="5" sql-type="nvarchar" not-null="false"/>
+    </property>
+  
+    <property name="CreateTime" type="DateTime">
+      <column name="CREATE_TIME" length="3" sql-type="date" not-null="false"/>
+    </property>
+    <property name="ModifyTime"  >
+      <column name="MODIFIED_TIME"></column>
+    </property> 
+    <many-to-one name="Customer" class="WebCrm.Model.Customer, WebCrm.Model">
+      <column name="CustomerID" length="16" sql-type="int" not-null="false"/>
+    </many-to-one>
+    <many-to-one name="Company" class="WebCrm.Model.Company, WebCrm.Model">
+      <column name="Company" length="4" sql-type="int" not-null="false"/>
+    </many-to-one>
+  </class>
+</hibernate-mapping>

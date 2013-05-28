@@ -1,0 +1,28 @@
+﻿<?xml version="1.0"  encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" assembly="WebCX.Model" namespace="WebCX.Model">
+  <class name="SYS_PARK" table="SYS_PARK">
+    <id name="ID" column="ID" type="int">
+      <generator class ="native">
+        <param name="sequence">SEQ_SYSPARK</param>
+      </generator>
+    </id>
+    <property name="PARKPID" column="PARKPID" type="int"  />
+    <property name="PARKCODE" column="PARKCODE" type="string"  />
+    <property name="PARKFULLNAME" column="PARKFULLNAME" type="string"  />
+    <property name="PARKSHORTNAME" column="PARKSHORTNAME" type="string"  />
+    <property name="PARKENGNAME" column="PARKENGNAME" type="string"  />
+    <property name="PARKKIND" column="PARKKIND" type="int"  />
+    <property name="PARKTYPE" column="PARKTYPE" type="string"  />
+    <property name="LEADER" column="LEADER" type="string"  />
+    <property name="TELNO" column="TELNO" type="string"  />
+    <property name="FAXNO" column="FAXNO" type="string"  />
+    <property name="ADDRESS" column="ADDRESS" type="string"  />
+    <property name="SORT" column="SORT" type="int"  />
+    <property name="RECFLAG" column="RECFLAG" type="int"  />
+    <property name="TRANSFLAG" column="TRANSFLAG" type="int"  />
+    <property name="REMARK" column="REMARK" type="string"  />
+    <property name="CREATE_TIME" column="CREATE_TIME" type="DateTime"  />
+    <property name="MODIFIED_TIME" column="MODIFIED_TIME" type="DateTime"  />
+    <property name="DELETED" column="DELETED" type="int"  />
+  </class>
+</hibernate-mapping>

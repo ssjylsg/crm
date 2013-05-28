@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" default-access="property" auto-import="true" default-cascade="none" default-lazy="true">
+  <class name="WebCrm.Model.CustormerConsumRecord, WebCrm.Model" table="Crm_CustormerConsumRecord">
+   <id name="Id" type="Int32" unsaved-value="0">
+      <column name="Id" length="16" sql-type="int" not-null="true" unique="true" index="PK_CustormerConsumRecord"/>
+     <generator class="assigned" />
+    </id>
+    <property name="ConsumptionDate"  >
+      <column name="ConsumptionDate" length="3" sql-type="date" not-null="false"/>
+    </property>
+ 
+    <many-to-one name="Customer" class="WebCrm.Model.Customer, WebCrm.Model">
+      <column name="CustomerID" length="16" sql-type="int" not-null="false"/>
+    </many-to-one>
+
+    <property name="SpendTotal" >
+      <column name="SpendTotal"  />
+    </property>
+ 
+    <many-to-one name="DiscountType" class="WebCrm.Model.CategoryItem, WebCrm.Model">
+      <column name="DiscountType" length="16" sql-type="int" not-null="false"/>
+    </many-to-one>
+
+    <property name="AfterDiscountFree" >
+      <column name="AfterDiscountFree"  />
+    </property>
+    <property name="Score" type="Int32">
+      <column name="Score" length="4" sql-type="int" not-null="false"/>
+    </property>
+ 
+    <many-to-one name="ScoreRule" class="WebCrm.Model.CategoryItem, WebCrm.Model">
+      <column name="ScoreRule" length="16" sql-type="int" not-null="false"/>
+    </many-to-one>
+    <many-to-one name="Company" class="WebCrm.Model.Company, WebCrm.Model">
+      <column name="Company" length="4" sql-type="int" not-null="false"/>
+    </many-to-one>
+    <property name="WriteDate" type="DateTime">
+      <column name="WriteDate" length="3" sql-type="date" not-null="false"/>
+    </property>
+ 
+    <many-to-one name="WritePerson" class="WebCrm.Model.OperatorUser, WebCrm.Model">
+      <column name="WritePersonId" length="16" sql-type="int" not-null="false"/>
+    </many-to-one>
+
+    <property name="Deleted" type="Boolean">
+       <column name="Deleted"  length="1" sql-type="bit" not-null="false"/>
+    </property>
+    <property name="ReceiveMoney">
+      <column name="ReceiveMoney"></column>
+    </property>
+    <property name="ConsumerDetails">
+      <column name="ConsumerDetails"></column>
+    </property>
+    <property name="Remark">
+      <column name="Remark"></column>
+    </property>
+    <property name="CreateTime" type="DateTime">
+      <column name="CreateTime" length="3" sql-type="date" not-null="false"/>
+    </property>
+    <property name="ModifyTime">
+      <column name="ModifyTime" length="3" sql-type="date" not-null="false"/>
+    </property>
+    <many-to-one name="ConsumerBusinessType" class="WebCrm.Model.CategoryItem, WebCrm.Model">
+      <column name="ConsumerBusinessType" length="16" sql-type="int" not-null="false"/>
+    </many-to-one>
+    <property name="FiledIds">
+      <column name="FiledIds"></column>
+    </property>
+    <many-to-one name="BussinessPerson" class="WebCrm.Model.OperatorUser, WebCrm.Model">
+      <column name="BussinessPerson" length="16" sql-type="int" not-null="false"/>
+    </many-to-one>
+  </class>
+</hibernate-mapping>

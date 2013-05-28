@@ -1,0 +1,1274 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7">
+    <link href="/OM/Themes/default/css.css" rel="stylesheet" type="text/css" />
+    <!--以下css为兼容IE6-->
+    <style type="text/css">
+        html
+        {
+            background: url(/OM/images/main_bg.png) left -1px repeat-x;
+            background-attachment: fixed;
+        }
+        #mContainer
+        {
+            padding: 20px 20px 20px 15px;
+        }
+    </style>
+  
+    <title>客户信息</title>
+    <style type="text/css">
+        .title
+        {
+            background-color: #fafafa;
+            border: solid 1px #f0f0f0;
+            font-weight: bold;
+            padding: 5px;
+            margin: 5px 0px;
+        }
+    </style>
+    <script src="../../Js/jquery-1.4.2.min.js" type="text/javascript"></script>
+    <script src="../../Js/Simple.js" type="text/javascript"></script>
+    <script src="../../Js/eqccd.js" type="text/javascript"></script>
+    <script src="../../Js/jCalendar.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        var signTable, // 客户标识块
+            assignedRange, // 所属范围块
+            managerIdEle,  // 所属人ID
+            managerNameEle,    // 所属Name
+            deptIdEle,       // 所属部门ID
+            btnSave,         // 保存按钮
+            btnModify,       // 修改按钮
+            btnCancel;      // 取消按钮
+        jQuery(function ($) {
+            //年龄和日期对应
+            jQuery("#_ctl0_WorkForm_CustomerContact_iAge").change(function () {
+                var Age = document.getElementById("_ctl0_WorkForm_CustomerContact_iAge");
+                var Birthday = document.getElementById("_ctl0_WorkForm_CustomerContact_dBirthday");
+                if (Birthday != null)
+                    var ageVal = Age.value;
+                if (!/^\d+$/.test(ageVal))
+                    Age.value = "";
+                else
+                    Birthday.value = (new Date().getFullYear() - ageVal) + "-01-01";
+            });
+            jQuery("#_ctl0_WorkForm_CustomerContact_dBirthday").click(function () {
+                var Age = document.getElementById("_ctl0_WorkForm_CustomerContact_iAge");
+                var Birthday = document.getElementById("_ctl0_WorkForm_CustomerContact_dBirthday");
+                if (Age != null)
+                    setday(Birthday, null, '_ctl0_WorkForm_CustomerContact_iAge')
+            });
+
+
+            //新增客户：当新增的是个人客户时，录入手机号码后，会员卡号需默认为录入的手机号
+            jQuery("#_ctl0_WorkForm_CustomerContact_sMobile").change(function () {
+                if (jQuery("input[name='_ctl0:WorkForm:Customer_iSignID']:checked").val() == "2") {
+                    isRepeatMobile(jQuery("#_ctl0_WorkForm_CustomerContact_sMobile").val());
+                    jQuery("#_ctl0_WorkForm_Customer_sMemberWedge").val(jQuery("#_ctl0_WorkForm_CustomerContact_sMobile").val());
+                }
+            });
+            //新增客户中默认带出的客户需求则不需要“联系人”显示，因为客户还未添加，无法选取
+            try {
+                document.getElementById("_ctl0_WorkForm_CustomerDemand_sLinkmanID").parentNode.parentNode.style.display = "none";
+            }
+            catch (e) { }
+
+            jQuery('#_ctl0_WorkForm_Customer_iEmployeeNumberID').change(function () {
+                var obj = jQuery('#_ctl0_WorkForm_Customer_iEmployeeNumberID');
+                if (isNaN(obj.val())) {
+                    obj.val(0);
+                    alert('请输入数字');
+                }
+            });
+
+            //init
+            managerIdEle = $("#_ctl0_WorkForm_Customer_iManagerID");
+            managerNameEle = $("#_ctl0_WorkForm_Customer_iManagerID_Name");
+            deptIdEle = $("#_ctl0_WorkForm_Customer_iDeptID");
+            btnSave = $("#_ctl0_WorkButton_btnSave");
+            btnModify = $("#_ctl0_WorkButton_btnModify");
+            btnCancel = $("#_ctl0_WorkButton_btnCancel");
+            signTable = $("#_ctl0_WorkForm_Customer_iSignID");
+            assignedRange = $("#_ctl0_WorkForm_Customer_bIsPublic");
+            // 
+            // 猎头模块客户只能添加企业客户
+            if ("".toLowerCase() == "hms") {
+                var $2 = signTable.find(":radio:eq(1)");
+                $2.next().remove();
+                $2.remove();
+            }
+            var checkedRadio = signTable.find(":radio:checked");
+            if (checkedRadio.length == 0)
+                signTable.find(":radio").get(0).checked = true;
+            checkedRadio = signTable.find(":radio:checked");
+            changeUI(checkedRadio.get(0).value);
+            changeAsign(assignedRange.find(":radio:checked").val());
+            InitElement();
+
+            // 切换标识
+            signTable.find(":radio").click(function () {
+                changeUI(this.value);
+
+
+            })
+            // 切换企业与个人客户的UI  type 1=企业 2=个人
+            function changeUI(type) {
+                var ele1 = $("td[sign=1],#btnRepeat");
+                var ele2 = $("td[sign=2]");
+                var eleDivBusiness = $("#_ctl0_WorkForm_divBusiness");
+                if (parseInt(type) == 1) {
+                    ele1.show();
+                    ele2.hide();
+                    if ("True" == "True")
+                        eleDivBusiness.show();
+                } else {
+                    ele1.hide();
+                    ele2.show();
+                    eleDivBusiness.hide();
+                }
+                autoHeight();
+            }
+            // 替换所属范围
+            assignedRange.find(":radio").click(function () {
+                changeAsign(this.value);
+            });
+            function changeAsign(isPublic) {
+                var idVal, methodName;
+                if (isPublic == "False") {
+                    idVal = managerIdEle.val();
+                    methodName = "GetUserName";
+                    $("#assignName").text('所属人：');
+                } else {
+                    idVal = deptIdEle.val();
+                    methodName = "GetDepName";
+                    $("#assignName").text('部门：')
+                }
+                if (idVal != "") {
+                    qc.asyncPost("Common_Core.dll", "Eqccdservice.FormManager", { Key: methodName, FormID: idVal },
+                     function (resVal) {
+                         managerNameEle.val(resVal);
+                     });
+                }
+            }
+            $("#btnAssignedto").click(function () {
+                contactSelect = false;
+                if (assignedRange.find(":radio:checked").get(0).value == "False")
+                    qc.selectUser('4', '4', managerIdEle.val(), 0, 1);
+                else
+                    qc.selectUser('1', '1', deptIdEle.val(), 0, 1);
+            });
+            btnSave.click(function () {
+                var sNameEle = $("#_ctl0_WorkForm_Customer_sName");
+                if (sNameEle.val() == "")
+                    sNameEle.val($("#_ctl0_WorkForm_Customer_sSimpleName").val());
+
+                //新增客户：先选择为企业客户，录入重复手机号码后，再切换为个人客户，保存时是可以保存成功的，个人客户手机号码检查在保存时也作一次检验    
+                if (signTable.find(":radio:checked").val() == "2") {
+                    var mobileVal = jQuery("#_ctl0_WorkForm_CustomerContact_sMobile").val();
+                    if (mobileVal != "") {
+                        var bb = isRepeatMobile();
+                        jQuery("#_ctl0_WorkForm_Customer_sMemberWedge").val(jQuery("#_ctl0_WorkForm_CustomerContact_sMobile").val());
+                        if (bb)
+                            return false;
+                    }
+                }
+
+                var passing = true;
+                $(".required").each(function () {
+                    var requiredEle = null;
+                    switch (this.id) {
+                        case "Customer_FK_TypeID":
+                        case "Customer_iIndustryID": requiredEle = $("#_ctl0_WorkForm_" + this.id + "_Parent"); break;
+                        case "Customer_iAreaID": requiredEle = $("#_ctl0_WorkForm_" + this.id + "_Province"); break;
+                        default: requiredEle = $("#_ctl0_WorkForm_" + this.id); break;
+                    }
+                    if (requiredEle.length == 0) return true;
+                    var $parent = requiredEle.parent();
+                    if (!$parent.is(":visible") || $parent.get(0).style.display == "none") return true;
+                    switch (requiredEle.get(0).tagName) {
+                        case "SELECT": passing = !(requiredEle.val() == -1); break;
+                        case "TABLE": passing = !requiredEle.find(":checked").length == 0; break;
+                        default:
+                            if (requiredEle.is(":hidden"))
+                                passing = !(requiredEle.val() == "" || requiredEle.val() == "0");
+                            else
+                                passing = !(requiredEle.val() == "");
+                            break;
+                    }
+                    if (!passing) {
+                        alert('[' + requiredEle.parent().prev("td").text().replace(/：$/, "") + ']不能为空!');
+                        requiredEle.focus();
+                        passing = false;
+                        return false;
+                    } else {
+                        if (this.id == "CustomerContact_sMobile" && signTable.find(":radio:checked").val() == "2") {
+                            passing = !isRepeatMobile(requiredEle.val())
+                            if (!passing) requiredEle.focus();
+                        }
+                    }
+                });
+                if (passing) $("input,select,textarea").attr("disabled", false);
+                return passing;
+            });
+            btnModify.click(function () {
+                setDisabled(false);
+            });
+            btnCancel.click(function () {
+                setDisabled(true);
+            });
+            $("#_ctl0_WorkButton_btnSetField").click(function () {
+                qc.openWindow("/Common/BaseData/DynamicLayoutForm.aspx");
+            });
+            // 公司简介文本框自动展开
+            $("#_ctl0_WorkForm_Customer_sMemo").trigger("keyup").trigger("paste").trigger("input");
+        });
+        function InitElement() {
+            switch ("add") {
+                case "add":
+                    btnModify.hide();
+                    btnCancel.hide();
+                    jQuery(".fk_cust").hide();
+                    break;
+                default: setDisabled(true); break;
+            }
+        }
+        function setDisabled(disabled) {
+            jQuery("input,select,textarea").attr("disabled", disabled);
+            btnModify.attr("disabled", !disabled);
+            if ("True" == "False") {
+                assignedRange.find(":radio").attr("disabled", true);
+                jQuery("#btnAssignedto").attr("disabled", true);
+            }
+            if ("add" != "add" && "False" == "False")
+                jQuery("#_ctl0_WorkForm_Customer_sCode,#btnGetNO").attr("disabled", true);
+            jQuery("#_ctl0_WorkButton_btnAcc").attr("disabled", false);
+
+            if (!disabled) {
+                if ($("#_ctl0_WorkForm_hidCodeVisble").val() == 1) {
+                    document.getElementById("_ctl0_WorkForm_Customer_sCode").disabled = false;
+                    document.getElementById("btnGetNO").disabled = false;
+                }
+                else {
+                    document.getElementById("_ctl0_WorkForm_Customer_sCode").disabled = true;
+                    document.getElementById("btnGetNO").disabled = true;
+                }
+            }
+        }
+        function isRepeatMobile(mobile) {
+            qc.post("Common_Core.dll", "Common_Core.MutiModel.CRM_BLL.Client", { "Key": "chkCustPhone", "ClientPhone": mobile }, function (data) {
+                mobile = data;
+            }, false);
+            if (mobile == "") return false;
+            alert('该手机号码已存在系统中，不能重复录入');
+            jQuery("#_ctl0_WorkForm_CustomerContact_sMobile").val("");
+            return true;
+        }
+        var contactId, contactName, contactSelect;
+        function selectContactPerson(id, name) {
+            contactSelect = true;
+            contactId = jQuery("#" + id);
+            contactName = jQuery("#" + name);
+            qc.selectUser('4', '4', contactId.val());
+        }
+        function setUser(type, o) {
+            var idEle = contactSelect ? contactId : (type == 1 ? deptIdEle : managerIdEle);
+            var nameEle = contactSelect ? contactName : managerNameEle;
+            if (o != null) {
+                idEle.val(o.val);
+                nameEle.val(o.text.replace(/一/g, ""));
+            } else {
+                idEle.val("");
+                nameEle.val("");
+            }
+        }
+        // 检测同名
+        function chkRepeat(id) {
+            var nameEle = jQuery("#_ctl0_WorkForm_Customer_sSimpleName");
+            if (nameEle.val().length == 0) return;
+            nameEle.val(nameEle.val().replace(/(^\s*)|(\s*$)/g, ""));
+            qc.asyncPost("Common_Core.dll", "Common_Core.MutiModel.CRM_BLL.Client", { Key: "DetectClient", ClientName: nameEle.val() },
+             function (resVal) {
+                 if (resVal == "True")
+                     qc.openWindow('/Common/Client/ClientDetectList.aspx?ClientName=' + encodeURIComponent(nameEle.val()), 760, 540);
+                 else
+                     alert('未查询到该客户，请更换关键词查询或新增该客户。');
+             });
+        }
+        var projId, projName
+        function selectDemand(id, name) {
+            projId = jQuery("#" + id);
+            projName = jQuery("#" + name);
+            qc.openWindow("/Common/BaseData/CustomerDemandChoose.aspx?ids=" + projId.val(), 800, 600);
+        }
+        function setDemandValue(ids, names) {
+            projId.val(ids);
+            projName.val(names);
+        }
+        //周期提醒
+        function setRemindLoop() {
+            qc.openWindow("/Common/Component/RemindSchEdit.aspx?Once=1&Opt=add&PKID=159863f5-7833-4eeb-b6cb-42d017c683cf&Model=Demand&FKID=0&Title=" + encodeURIComponent('提醒周期设置'), 550, 390);
+        }
+        function RefreshSave() {
+            qc.asyncPost("Common_Core.dll", "Common_Core.Common.RemindSch", { method: "GetRemindMemo", pk_id: "159863f5-7833-4eeb-b6cb-42d017c683cf" }, function (resVal) {
+                jQuery("#_ctl0_WorkForm_CustomerDemand_sRemindWay").val(resVal);
+            });
+        }
+        function giveacc(id) {
+            qc.openWindow("/crm/Client/CustLoginAccount.aspx?id=0", 700, 500);
+        }
+        function autoHeight() {
+            var frame1 = parent.document.getElementById('frame1');
+            if (!frame1) return;
+            frame1.style.height = document.documentElement.scrollHeight + 'px';
+        }
+    </script>
+    <title></title>
+</head>
+<body class="main">
+    <div id="mContainer">
+        <form name="aspnetForm" method="post" action="CustomerInfo.aspx" id="aspnetForm">
+        <input type="hidden" name="__VIEWSTATE" id="__VIEWSTATE" value="/wEPDwUKLTMxMDQ0OTAyNg8WAh4FcG9wdXBkFgJmD2QWBGYPZBYEAgEPFgIeBFRleHQF/BI8c2NyaXB0IHR5cGU9InRleHQvamF2YXNjcmlwdCI+DQp2YXIgTGFuZ3VhZ2UgPSB7DQogIC8qIC0tLS0tLS0tLS0tLS0tLS0tICDml6XmnJ/mjqfku7YgIC0tLS0tLS0tLS0tLS0tLS0qLw0KICBUb2RheToi5LuK5aSpIixZZWFyOiLlubQiLE1vbnRoOiLmnIgiLA0KICBXMDoi5pelIixXMToi5LiAIixXMjoi5LqMIixXMzoi5LiJIixXNDoi5ZubIixXNToi5LqUIixXNjoi5YWtIiwNCiAgLyogLS0tLS0tLS0tLS0tLS0tLS1idXR0b24gdGV4dC0tLS0tLS0tLS0tLS0tLS0qLw0KICBFZGl0OiLnvJbovpEiLCAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgDQogIENhbmNlbDoi5Y+W5raIIiwNCiAgQ2xvc2U6IuWFs+mXrSIsDQogIC8qIC0tLS0tLS0tLS0tLS0tLS0tbGFibGUtLW1zZy0tLS0tLS0tLS0tLS0tLS0tICovDQogIE9yZ2FuaXphdGlvbjoi5py65p6EIiwNCiAgRGVwYXJ0bWVudDoi6YOo6ZeoIiwNCiAgUGVyc29ubmVsOiLkurrlkZgiLA0KICBEZWxldGVTdWNjZWVkOiLliKDpmaTmiJDlip8iLA0KICBEZWxldGVGYWlsdXJlZDoi5Yig6Zmk5aSx6LSlIiwNCiAgT3BlcmF0ZVN1Y2NlZWQ6IuaTjeS9nOaIkOWKnyIsDQogIE9wZXJhdGVGYWlsdXJlZDoi5pON5L2c5aSx6LSlIiwNCiAgU2F2ZVN1Y2NlZWQ6IuS/neWtmOaIkOWKnyIsIA0KICBTYXZlRmFpbHVyZWQ6IuS/neWtmOWksei0pSIsICAgDQogIEV4cGFuZDoi5bGV5byAIiwgDQogIEZvbGRpbmc6IuaKmOWPoCIsICAgIA0KICBBbGwxOiItLeWFqOmDqC0tIiwgICANCiAgUGxlYXNlU2VsZWN0OiItLeivt+mAieaLqS0tIiwNCiAgU2VsZkRlZmF1bHQ6Ii0t6buY6K6k6Ieq5bexLS0iLA0KICBQbGVhc2VDaG9vc2U6Iuivt+mAieaLqSIsDQogIE5vdEVtcHR5OiLkuI3og73kuLrnqboiLA0KICBOb3RBdXRob3JpemVkOiLmsqHmnInmnYPpmZAiLA0KICBOb1NlbGVjdGVkOiLmsqHmnInpgInmi6kiLA0KICBOb3RFeGlzdHM6IuS4jeWtmOWcqCIsDQogIEFscmVhZHlFeGlzdHM6IuW3suWtmOWcqCIsDQogIEludmFsaWQ6IuaXoOaViCIsDQogIFRhbGVudFJldmlld3M6IuS6uuaJjeivhOivrSIsDQogIE1zZ0FkZEJsYWNrbGlzdDoi5oKo56Gu5a6a5bCG5b2T5YmN5Lq65omN5Yqg5YWl6buR5ZCN5Y2VPyIsDQogIFNvcnQ6IuaOkuW6jyIsDQogIE1vcmU6IuabtOWkmiIsDQogIFJlYXNvbjoi5Y6f5ZugIiwNCiAgTXVzdE51bWVyaWM6IuW/hemhu+aYr+aVsOWtlyIsDQogIE5hbWU6IuWnk+WQjSIsDQogICJOYW1lMSI6IuWQjeensCIsDQogIFRhbGVudENhdGVnb3J5OiLkurrmiY3nsbvliKsiLA0KICBUYWxlbnRSYW5raW5nOiLkurrmiY3nuqfliKsiLA0KICBET0I6IuWHuueUn+aXpeacnyIsDQogIEFnZToi5bm06b6EIiwNCiAgV29ya2luZ1llYXJzOiLlt6XkvZzlubTpmZAiLA0KICBFZHVjYXRpb246IuWtpuWOhiIsDQogIEZvcmVpZ25sYW5ndWFnZToi5aSW6K+t5rC05bmzIiwNCiAgR3JhZHVhdGlvbkNvbGxlZ2VzOiLmr5XkuJrpmaLmoKEiLA0KICBHcmFkdWF0aW9uVGltZToi5q+V5Lia5pe26Ze0IiwNCiAgTWFqb3I6IuS4k+S4miIsDQogIEVtYWlsOiLpgq7nrrEiLA0KICBJTU5POiJJTeWPt+eggSIsDQogIE1vYmlsZToi5omL5py6IiwNCiAgT2ZmaWNlUGhvbmU6IuWKnuWFrOeUteivnSIsDQogIEZhbWlseVBob25lOiLlrrbluq3nlLXor50iLA0KICBJRGNhcmQ6Iui6q+S7veivgSIsDQogIE5hdGlvbmFsaXR5OiLlm73nsY0iLA0KICBFdGhuaWNHcm91cDoi5rCR5pePIiwNCiAgSGVpZ2h0OiLouqvpq5giLA0KICBXZWlnaHQ6IuS9k+mHjSIsDQogIE5hdGl2ZVBsYWNlOiLnsY3otK8iLA0KICBSZXNpZGVuY3k6IueOsOWxheS9j+WcsCIsDQogIEFkZHJlc3M6IuWcsOWdgCIsDQogIFBvc3Rjb2RlOiLpgq7nvJYiLA0KICBSZWdpc3RyYW50OiLnmbvorrDkuroiLA0KICBJbmR1c3RyeToi6KGM5LiaIiwNCiAgUmVnaXN0cmF0aW9uRGF0ZToi5oql5Yiw5pel5pyfIiwNCiAgRHV0eToi6IGM6IO9IiwNCiAgRXhwZWN0ZWRTYWxhcnk6Iuacn+acm+iWqui1hCIsDQogIEV4cGVjdGVkTG9jYXRpb246Iuacn+acm+W3peS9nOWcsCIsDQogIEN1cnJlbnRDb21wYW55OiLnjrDku7vogYzlhazlj7giLA0KICBQb3NpdGlvbjoi6IGM5L2NIiwNCiAgWU9TOiLku7vogYzlubTpmZAiLA0KICBDdXJyZW50U2FsYXJ5OiLnm67liY3olqrotYQiLA0KICBDaGluZXNlOiLkuK3mlociLA0KICBFbmdsaXNoOiLoi7HmlociLA0KICBSZXN1bWU6IueugOWOhiIsDQogIE1zZ19QZXNfQWRkUmVzdW1lOiLmgqjmsqHmnInkv53lrZjvvIzkv6Hmga/lsIbkuKLlpLHvvIHnoa7lrpropoHliIfmjaIiLA0KICBDb250aW51ZUFkZDoi5oKo5piv5ZCm6KaB57un57ut5re75Yqg77yfIiwNCiAgU3VwcGxpZXIxOiLkvpvlupTllYYiLA0KICBUYWxlbnQ6IuS6uuaJjSIsDQogIEVudGVyU046Iuivt+W9leWFpVNOIg0KfQ0KPC9zY3JpcHQ+ZAICD2QWAmYPFgIfAQUM5a6i5oi35L+h5oGvZAIBD2QWBgIBD2QWAgIBD2QWAmYPFgIfAQWHATxkaXYgY2xhc3M9Im5hdiI+DQo8YSBocmVmPSJqYXZhc2NyaXB0OiIgY2xhc3M9ImhvdmVyIiBzdHlsZT0ibGVmdDowcHg7ei1pbmRleDo5OSIgPuWuouaIt+S/oeaBrzwvYT4NCjxkaXYgY2xhc3M9ImNsZWFyIj48L2Rpdj48L2Rpdj4NCmQCAg9kFgoCAQ8WAh4FdmFsdWUFBuS/ruaUuWQCAw8WAh8CBQzliIbphY3luJDlj7dkAgUPDxYCHwEFBuS/neWtmGRkAgcPFgIfAgUG5Y+W5raIZAIJDxYEHwIFDOeVjOmdouiuvue9rh4HVmlzaWJsZWhkAgMPZBYIAgEPFgIfAQUM5Z+65pys5L+h5oGvZAIFDxYCHwNoFgICAQ8WAh8BBQzlrqLmiLfpnIDmsYJkAgcPFgIfA2gWAgIBDxYCHwEFDOe7j+iQpeS/oeaBr2QCCQ9kFgICAQ8WAh8BBQ/ogZTns7vkurrkv6Hmga9kGAEFHl9fQ29udHJvbHNSZXF1aXJlUG9zdEJhY2tLZXlfXxYBBR9fY3RsMDpXb3JrRm9ybTpTb3VyY2VfYklzUHVibGljpjCV4tkxXBTX4lC9GXuhcdpNDjM=" />
+        <input type="hidden" name="__EVENTVALIDATION" id="__EVENTVALIDATION" value="/wEWhwICrffEnQ4C+ZvN0wkC3/S23Q4Coqf+pggCr5P8UAKuk/xQAqD81r4MAsTH5hMCtNyCmw8Cq43q0wcCo42m0AcCp42m0AcCpY2m0AcCpo2m0AcCpI2m0AcCsI2m0AcCoY2m0AcCv42m0AcCy5jHkgsCr7Cf3gsC4t/eqgUCwrCoqAoCpJzIIwLnuvzUAgK2q9jqCAK2q8ToCAK91fmyAwKx1bWxAwKw1bWxAwKz1bWxAwL+mT4Cqv7f3gUCxsKKhAICq++PsgkCtYLCnQUCuYKOngUCuIKOngUCu4KOngUCu7+31gICt7/71QICtr/71QICtb/71QICtL/71QICsr/71QICt7+71gICt7+z1gICt7+L1gIC8IzJGAL8jIUbAv2MhRsC/oyFGwL/jIUbAsHX6ckKAs3XpcoKAszXpcoKAs/XpcoKAs7XpcoKAp3286UJApvbrsELAq/eu7AIAq7eu7AIAqveu7AIApT62f4GAvfD5JMEArjlu5wDAtzN49ADApGioqQNAu++q5kKAuvlzqoEAq3NrYMKAqHN4YAKAqDN4YAKAqPN4YAKAqLN4YAKAqXN4YAKAqTN4YAKAqvR0foGAqHUlbwGArGSw5AIAv7s+6UMAtzRyM4EAvGJ8ocBAonJzHkC2fiDjwUC1fjPjAUC1PjPjAUC1/jPjAUC3Om+hwcC0OnyhAcC0enyhAcC0unyhAcC0+nyhAcC0v7q9w0C3v6m9A0C3/6m9A0C3P6m9A0C3f6m9A0C2v6m9A0C2/6m9A0CltvnuQQCnLKMygICjuWF6gsC5OGi7QMCgY7Zvg0CuIv9/ggC8NqHmgMC/NrLmQMC/drLmQMC/trLmQMC/9rLmQMC+NrLmQMC+drLmQMC+trLmQMC69rLmQMC5NrLmQMC/NqLmgMC/NqHmgMC/NqDmgMC/Nq/mgMC3q3A4QgC0K2M4ggC0a2M4ggC1q2M4ggC162M4ggC1K2M4ggCxa2M4ggCyq2M4ggC0q3M4QgC0q3A4QgC0q3E4QgC0q344QgC0q3w4QgC0q384QgC0sfr2AcC3sen2wcC38en2wcC3Men2wcC3cen2wcC5IeNhgMC6IfBhQMC6YfBhQMC6ofBhQMC64fBhQMC7IfBhQMC7YfBhQMC7ofBhQMC/4fBhQMC8IfBhQMC6IeBhgMC6IeNhgMC6IeJhgMC6Ie1hgMC6IexhgMC6Ie9hgMC6Ie5hgMC6IelhgMC6IfhhQMC6IfthQMC6YeBhgMC6YeNhgMC6YeJhgMC6Ye1hgMC6YexhgMC6Ye9hgMC6Ye5hgMC6YelhgMC6YfhhQMC6YfthQMC6oeBhgMC6oeNhgMC6oeJhgMC6oe1hgMC6oexhgMC6oe9hgMC6oe5hgMC6oelhgMC6ofhhQMC6ofthQMC64eBhgMC64eNhgMC64eJhgMC64e1hgMC64exhgMC64e9hgMC64e5hgMC64elhgMC64fhhQMC64fthQMC7IeBhgMC7IeNhgMC7IeJhgMC7Ie1hgMC7IexhgMC7Ie9hgMC7Ie5hgMCgcqaDwKNytYMAozK1gwCj8rWDAKOytYMAonK1gwCiMrWDAKLytYMAprK1gwClcrWDAKNypYPAruOqrkLAreO5roLAraO5roLArWO5roLArSO5roLArOO5roLArKO5roLAqbHjKULAqrHwKYLAqvHwKYLAqjHwKYLApCklagMApyk2asMAp2k2asMAp6k2asMAp+k2asMApik2asMAuTFs/UOAujF//YOAunF//YOAurF//YOAuvF//YOAuzF//YOAo+drscJAoOd4sQJAoKd4sQJAoGFypMIAo2FhpAIAoyFhpAIAo+FhpAIArS1qo0JAp+RqqgNAs36kOcMAuXTsFQC2IeLmQ8Cs87SggMClbOkvgICwpbKjgwC4fi3xwYCqLGE5gMCjr2xiw8CoYmstQwC3vKsqwkCk/rR2wIC9daC9AgChoatvgcCybK92QcC47XluQUCps23xgcCsoKWpQECv4eBqQYCkce8lgYCkceglAQCh6umAgLw1b2LBALz5O71CQKw2YHNCl9OMPyd3i5nZ0IaGJ4ufWqbbZV9" />
+        <table cellpadding="0" cellspacing="0" width="100%">
+            <tr>
+                <td>
+                </td>
+            </tr>
+            <tr id="path">
+                <td>
+                    <div class="path" style=''>
+                        <div class="menublock" id="menublock">
+                            <div class="nav">
+                                <a href="javascript:" class="hover" style="left: 0px; z-index: 99">客户信息</a>
+                                <div class="clear">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="btnblock" id="btnblock" style="top: 0px">
+                            <input name="_ctl0:WorkButton:btnModify" type="button" id="_ctl0_WorkButton_btnModify"
+                                value="修改" class="button2" />
+                            <input type="submit" name="_ctl0:WorkButton:btnSave" value="保存" id="_ctl0_WorkButton_btnSave"
+                                class="button2" />
+                            <input name="_ctl0:WorkButton:btnCancel" type="button" id="_ctl0_WorkButton_btnCancel"
+                                value="取消" class="button2" />
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td class="content" id="tdcontent">
+                    <div class="form" id="formblock">
+                        <div id="formMain">
+                            <div id="customer">
+                                <div class="title">
+                                    基本信息
+                                </div>
+                                <table cellpadding="1px" cellspacing="0px" style="width: 100%;">
+                                    <tr>
+                                        <td style="width: 70px;">
+                                            客户标识：
+                                        </td>
+                                        <td>
+                                            <table id="_ctl0_WorkForm_Customer_iSignID" border="0">
+                                                <tr>
+                                                    <td>
+                                                        <input id="_ctl0_WorkForm_Customer_iSignID_0" type="radio" name="_ctl0:WorkForm:Customer_iSignID"
+                                                            value="1" checked="checked" /><label for="_ctl0_WorkForm_Customer_iSignID_0">企业</label>
+                                                    </td>
+                                                    <td>
+                                                        <input id="_ctl0_WorkForm_Customer_iSignID_1" type="radio" name="_ctl0:WorkForm:Customer_iSignID"
+                                                            value="2" /><label for="_ctl0_WorkForm_Customer_iSignID_1">个人</label>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                        <td style="width: 70px;">
+                                            客户编号：
+                                        </td>
+                                        <td>
+                                            <input name="_ctl0:WorkForm:Customer_sCode" type="text" value="QC-7702" id="_ctl0_WorkForm_Customer_sCode" /><input
+                                                type="button" id="btnGetNO" class="button" value="获取编号" onclick="GetNewCode(5,'_ctl0_WorkForm_Customer_sCode')" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 70px;">
+                                            创建时间：
+                                        </td>
+                                        <td>
+                                            <input name="_ctl0:WorkForm:Customer_dCreateTime" type="text" value="2013-04-27 16:56:12"
+                                                id="_ctl0_WorkForm_Customer_dCreateTime" onfocus="blur()" style="width: 121px;" />
+                                        </td>
+                                        <td style="width: 70px;">
+                                            客户类型：
+                                        </td>
+                                        <td>
+                                            <!--使用该控件必须引用simple.js-->
+                                            <script src="/OM/common/mod/BaseDataJson.ashx?lan=0&par=CustKind&all=0&group=0" type="text/javascript"></script>
+                                            <select style="width: 138px" class="" id="_ctl0_WorkForm_Customer_FK_TypeID_Parent"
+                                                name="_ctl0:WorkForm:Customer_FK_TypeID_Parent" child="_ctl0_WorkForm_Customer_FK_TypeID">
+                                            </select>
+                                            <select style="width: 138px" class="" id="_ctl0_WorkForm_Customer_FK_TypeID" name="_ctl0:WorkForm:Customer_FK_TypeID">
+                                            </select>
+                                            <script type="text/javascript">
+                                                var slt_ctl0_WorkForm_Customer_FK_TypeID_Parent = document.getElementById("_ctl0_WorkForm_Customer_FK_TypeID_Parent");
+                                                UI.bindSelect("_ctl0_WorkForm_Customer_FK_TypeID_Parent", CustKind, '61' == '0' ? CustKind[0].id : '61');
+                                                var _ctl0_WorkForm_Customer_FK_TypeID_Parent_selected = slt_ctl0_WorkForm_Customer_FK_TypeID_Parent.options[slt_ctl0_WorkForm_Customer_FK_TypeID_Parent.selectedIndex].list;
+                                                UI.bindSelect("_ctl0_WorkForm_Customer_FK_TypeID", _ctl0_WorkForm_Customer_FK_TypeID_Parent_selected, -1 == 0 ? _ctl0_WorkForm_Customer_FK_TypeID_Parent_selected[0].id : -1)
+                                            </script>
+                                            <span class='required' id='Customer_FK_TypeID' style='color: red'>*</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 70px;">
+                                            地区：
+                                        </td>
+                                        <td>
+                                            <select style="width: 100px" class="" id="_ctl0_WorkForm_Customer_iAreaID_Province"
+                                                name="_ctl0:WorkForm:Customer_iAreaID_Province" onchange="changeArea(this,'_ctl0_WorkForm_Customer_iAreaID_City')">
+                                            </select>
+                                            <select style="width: 100px" class="" id="_ctl0_WorkForm_Customer_iAreaID_City" name="_ctl0:WorkForm:Customer_iAreaID_City"
+                                                onchange="changeArea(this,'_ctl0_WorkForm_Customer_iAreaID_Area')">
+                                            </select>
+                                            <script type="text/javascript">
+
+                                                var _ctl0_WorkForm_Customer_iAreaID_province = [{ id: -1, name: '--请选择--' }, { id: 4, name: '北京' }, { id: 5, name: '天津' }, { id: 6, name: '上海' }, { id: 7, name: '重庆' }, { id: 8, name: '广东省' }, { id: 9, name: '江苏省' }, { id: 10, name: '浙江省' }, { id: 11, name: '福建省' }, { id: 12, name: '湖南省' }, { id: 13, name: '湖北省' }, { id: 14, name: '山东省' }, { id: 15, name: '辽宁省' }, { id: 16, name: '吉林省' }, { id: 17, name: '云南省' }, { id: 18, name: '四川省' }, { id: 19, name: '安徽省' }, { id: 20, name: '江西省' }, { id: 21, name: '黑龙江省' }, { id: 22, name: '河北省' }, { id: 23, name: '陕西省' }, { id: 24, name: '海南省' }, { id: 25, name: '河南省' }, { id: 26, name: '山西省' }, { id: 27, name: '内蒙古自治区' }, { id: 28, name: '广西壮族自治区' }, { id: 29, name: '贵州省' }, { id: 30, name: '宁夏回族自治区' }, { id: 31, name: '青海省' }, { id: 32, name: '新疆维吾尔自治区' }, { id: 33, name: '西藏自治区' }, { id: 34, name: '甘肃省' }, { id: 35, name: '台湾省' }, { id: 36, name: '香港特别行政区' }, { id: 37, name: '澳门特别行政区'}];
+                                                var _ctl0_WorkForm_Customer_iAreaID_city = [{ id: -1, name: '--请选择--'}];
+
+                                                UI.bindSelect("_ctl0_WorkForm_Customer_iAreaID_Province", _ctl0_WorkForm_Customer_iAreaID_province, -1 == -1 ? _ctl0_WorkForm_Customer_iAreaID_province[0].id : -1);
+                                                UI.bindSelect("_ctl0_WorkForm_Customer_iAreaID_City", _ctl0_WorkForm_Customer_iAreaID_city, -1 == -1 ? _ctl0_WorkForm_Customer_iAreaID_city[0].id : -1);
+
+                                                function applicationPath() {
+                                                    var sPathName = document.location.pathname;
+                                                    var iCount = sPathName.indexOf("/", 1);
+                                                    var sPath = sPathName.substring(0, iCount);
+                                                    return sPath;
+                                                }
+                                                function changeArea(o, id) {
+                                                    if (document.getElementById(id) == null) return;
+                                                    Ajax.post(applicationPath() + "/common/mod/ajax.ashx", function (r) {
+                                                        if (r != null) {
+                                                            var list = eval(r);
+                                                            UI.bindSelect(id, list, list[0].id);
+                                                        }
+                                                    }, { "dll": "Common_Core.dll", "class": "Common_Core.BaseData.BaseDataManager", "method": "GetAreaChild", cmd: "area", areaid: o.value, lan: 0 });
+                                                }
+                                            </script>
+                                        </td>
+                                        <td style="width: 70px;">
+                                            来源：
+                                        </td>
+                                        <td>
+                                            <select name="_ctl0:WorkForm:Customer_iSourceID" id="_ctl0_WorkForm_Customer_iSourceID"
+                                                style="width: 136px;">
+                                                <option selected="selected" value="-1">--请选择--</option>
+                                                <option value="5">自已关系</option>
+                                                <option value="1">网络宣传</option>
+                                                <option value="3">业务开发</option>
+                                                <option value="2">活动影响</option>
+                                                <option value="4">朋友介绍</option>
+                                                <option value="8">公司网站</option>
+                                                <option value="7">客户介绍</option>
+                                                <option value="9">会场</option>
+                                            </select><span class='required' id='Customer_iSourceID' style='color: red'>*</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 70px;">
+                                            所属客户：
+                                        </td>
+                                        <td>
+                                            <table id="_ctl0_WorkForm_Customer_bIsPublic" border="0">
+                                                <tr>
+                                                    <td>
+                                                        <input id="_ctl0_WorkForm_Customer_bIsPublic_0" type="radio" name="_ctl0:WorkForm:Customer_bIsPublic"
+                                                            value="False" checked="checked" /><label for="_ctl0_WorkForm_Customer_bIsPublic_0">私有</label>
+                                                    </td>
+                                                    <td>
+                                                        <input id="_ctl0_WorkForm_Customer_bIsPublic_1" type="radio" name="_ctl0:WorkForm:Customer_bIsPublic"
+                                                            value="True" /><label for="_ctl0_WorkForm_Customer_bIsPublic_1">公共</label>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                        <td style="width: 70px;" id="assignName">
+                                            所属人：
+                                        </td>
+                                        <td>
+                                            <input type="hidden" name="_ctl0:WorkForm:Customer_iManagerID" id="_ctl0_WorkForm_Customer_iManagerID"
+                                                value="306" /><input name="_ctl0:WorkForm:Customer_iManagerID_Name" type="text" value="陈爽"
+                                                    id="_ctl0_WorkForm_Customer_iManagerID_Name" onfocus="blur()" /><input type="button"
+                                                        class="button" style="width: 20px" value="..." id="btnAssignedto" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 70px;" sign="1">
+                                            客户简称：
+                                        </td>
+                                        <td sign="1">
+                                            <input name="_ctl0:WorkForm:Customer_sSimpleName" type="text" id="_ctl0_WorkForm_Customer_sSimpleName"
+                                                style="width: 280px;" /><input type="button" id="btnRepeat" class="button" value="检测同名"
+                                                    onclick="chkRepeat('_ctl0_WorkForm_Customer_sSimpleName')" />
+                                        </td>
+                                        <td style="width: 70px;" sign="1">
+                                            英文名：
+                                        </td>
+                                        <td sign="1">
+                                            <input name="_ctl0:WorkForm:Customer_sNameE" type="text" id="_ctl0_WorkForm_Customer_sNameE" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 70px;">
+                                            客户名称：
+                                        </td>
+                                        <td>
+                                            <input name="_ctl0:WorkForm:Customer_sName" type="text" id="_ctl0_WorkForm_Customer_sName"
+                                                style="width: 280px;" /><span class='required' id='Customer_sName' style='color: red'>*</span>
+                                        </td>
+                                        <td style="width: 70px;">
+                                            会员类型：
+                                        </td>
+                                        <td>
+                                            <select name="_ctl0:WorkForm:Customer_FK_MemberGrade" id="_ctl0_WorkForm_Customer_FK_MemberGrade"
+                                                style="width: 136px;">
+                                                <option selected="selected" value="-1">--请选择--</option>
+                                                <option value="1">普通会员</option>
+                                                <option value="2">VIP会员</option>
+                                                <option value="3">高级VIP会员</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 70px;" sign="1">
+                                            电子邮件：
+                                        </td>
+                                        <td sign="1">
+                                            <input name="_ctl0:WorkForm:Customer_sEmail" type="text" id="_ctl0_WorkForm_Customer_sEmail" />
+                                        </td>
+                                        <td style="width: 70px;" sign="1">
+                                            地址：
+                                        </td>
+                                        <td sign="1">
+                                            <input name="_ctl0:WorkForm:Customer_sAddress" type="text" id="_ctl0_WorkForm_Customer_sAddress"
+                                                style="width: 280px;" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 70px;" sign="1">
+                                            邮政编码：
+                                        </td>
+                                        <td sign="1">
+                                            <input name="_ctl0:WorkForm:Customer_sZip" type="text" id="_ctl0_WorkForm_Customer_sZip" />
+                                        </td>
+                                        <td style="width: 70px;" sign="1">
+                                            网址：
+                                        </td>
+                                        <td sign="1">
+                                            <input name="_ctl0:WorkForm:Customer_sWebSite" type="text" id="_ctl0_WorkForm_Customer_sWebSite" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 70px;" sign="1">
+                                            行业：
+                                        </td>
+                                        <td sign="1">
+                                            <!--使用该控件必须引用simple.js-->
+                                            <script src="/OM/common/mod/BaseDataJson.ashx?lan=0&par=ClientIndustry&all=0&group=0"
+                                                type="text/javascript"></script>
+                                            <select style="width: 138px" class="" id="_ctl0_WorkForm_Customer_iIndustryID_Parent"
+                                                name="_ctl0:WorkForm:Customer_iIndustryID_Parent" child="_ctl0_WorkForm_Customer_iIndustryID">
+                                            </select>
+                                            <select style="width: 138px" class="" id="_ctl0_WorkForm_Customer_iIndustryID" name="_ctl0:WorkForm:Customer_iIndustryID">
+                                            </select>
+                                            <script type="text/javascript">
+                                                var slt_ctl0_WorkForm_Customer_iIndustryID_Parent = document.getElementById("_ctl0_WorkForm_Customer_iIndustryID_Parent");
+                                                UI.bindSelect("_ctl0_WorkForm_Customer_iIndustryID_Parent", ClientIndustry, '4' == '0' ? ClientIndustry[0].id : '4');
+                                                var _ctl0_WorkForm_Customer_iIndustryID_Parent_selected = slt_ctl0_WorkForm_Customer_iIndustryID_Parent.options[slt_ctl0_WorkForm_Customer_iIndustryID_Parent.selectedIndex].list;
+                                                UI.bindSelect("_ctl0_WorkForm_Customer_iIndustryID", _ctl0_WorkForm_Customer_iIndustryID_Parent_selected, 4 == 0 ? _ctl0_WorkForm_Customer_iIndustryID_Parent_selected[0].id : 4)
+                                            </script>
+                                        </td>
+                                        <td style="width: 70px;" sign="1">
+                                            认可程度：
+                                        </td>
+                                        <td sign="1">
+                                            <select name="_ctl0:WorkForm:Customer_iRecognizeID" id="_ctl0_WorkForm_Customer_iRecognizeID"
+                                                style="width: 136px;">
+                                                <option selected="selected" value="-1">--请选择--</option>
+                                                <option value="1">不认可</option>
+                                                <option value="2">一般认可</option>
+                                                <option value="3">非常认可</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 70px;" sign="1">
+                                            企业性质：
+                                        </td>
+                                        <td sign="1">
+                                            <select name="_ctl0:WorkForm:Customer_iCharacterID" id="_ctl0_WorkForm_Customer_iCharacterID"
+                                                style="width: 136px;">
+                                                <option selected="selected" value="-1">--请选择--</option>
+                                                <option value="1">国有企业</option>
+                                                <option value="2">外资企业</option>
+                                                <option value="3">合资企业</option>
+                                                <option value="4">私营企业</option>
+                                                <option value="6">股份制企业</option>
+                                                <option value="10">行政机关</option>
+                                                <option value="12">事业单位</option>
+                                                <option value="14">其他</option>
+                                            </select>
+                                        </td>
+                                        <td style="width: 70px;" sign="1">
+                                            忠诚度：
+                                        </td>
+                                        <td sign="1">
+                                            <select name="_ctl0:WorkForm:Customer_iLoyaltyID" id="_ctl0_WorkForm_Customer_iLoyaltyID"
+                                                style="width: 136px;">
+                                                <option selected="selected" value="-1">--请选择--</option>
+                                                <option value="1">忠诚度高</option>
+                                                <option value="2">忠诚度一般</option>
+                                                <option value="3">忠诚度低</option>
+                                                <option value="4">游离客户</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 70px;" sign="1">
+                                            重要程度：
+                                        </td>
+                                        <td sign="1">
+                                            <select name="_ctl0:WorkForm:Customer_iImportanceID" id="_ctl0_WorkForm_Customer_iImportanceID"
+                                                style="width: 136px;">
+                                                <option selected="selected" value="-1">--请选择--</option>
+                                                <option value="1">非常重要</option>
+                                                <option value="2">重要</option>
+                                                <option value="3">一般</option>
+                                                <option value="4">较弱</option>
+                                            </select>
+                                        </td>
+                                        <td style="width: 70px;" sign="1">
+                                            上级公司：
+                                        </td>
+                                        <td sign="1">
+                                            <input type="hidden" name="_ctl0:WorkForm:Customer_FK_iParentID" id="_ctl0_WorkForm_Customer_FK_iParentID"
+                                                value="0" /><input name="_ctl0:WorkForm:Customer_FK_iParentID_Name" type="text" id="_ctl0_WorkForm_Customer_FK_iParentID_Name"
+                                                    onfocus="blur()" /><input type="button" class="button" style="width: 20px" value="..."
+                                                        onclick="ChooseCust('_ctl0_WorkForm_Customer_FK_iParentID','_ctl0_WorkForm_Customer_FK_iParentID_Name')" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 70px;">
+                                            客户类型：
+                                        </td>
+                                        <td>
+                                            <input name="_ctl0:WorkForm:Customer_ClientColumn1" type="text" id="_ctl0_WorkForm_Customer_ClientColumn1" />
+                                        </td>
+                                        <td style="width: 70px;">
+                                            客户车辆：
+                                        </td>
+                                        <td>
+                                            <input name="_ctl0:WorkForm:Customer_ClientColumn2" type="text" id="_ctl0_WorkForm_Customer_ClientColumn2" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 70px;">
+                                            购车年限：
+                                        </td>
+                                        <td>
+                                            <input name="_ctl0:WorkForm:Customer_ClientColumn5" type="text" id="_ctl0_WorkForm_Customer_ClientColumn5" />
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div id="_ctl0_WorkForm_divContact">
+                                <div class="title">
+                                    联系人信息
+                                </div>
+                                <table cellpadding="1px" cellspacing="0px" style="width: 100%;">
+                                    <tr>
+                                        <td style="width: 70px;" sign="1">
+                                            姓名：
+                                        </td>
+                                        <td sign="1">
+                                            <input name="_ctl0:WorkForm:CustomerContact_sName" type="text" id="_ctl0_WorkForm_CustomerContact_sName" /><span
+                                                class='required' id='CustomerContact_sName' style='color: red'>*</span>
+                                        </td>
+                                        <td style="width: 70px;">
+                                            年龄：
+                                        </td>
+                                        <td>
+                                            <input name="_ctl0:WorkForm:CustomerContact_iAge" type="text" value="0" id="_ctl0_WorkForm_CustomerContact_iAge" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 70px;" sign="1">
+                                            状态：
+                                        </td>
+                                        <td sign="1">
+                                            <table id="_ctl0_WorkForm_CustomerContact_bDimission" border="0">
+                                                <tr>
+                                                    <td>
+                                                        <input id="_ctl0_WorkForm_CustomerContact_bDimission_0" type="radio" name="_ctl0:WorkForm:CustomerContact_bDimission"
+                                                            value="False" checked="checked" /><label for="_ctl0_WorkForm_CustomerContact_bDimission_0">在职</label>
+                                                    </td>
+                                                    <td>
+                                                        <input id="_ctl0_WorkForm_CustomerContact_bDimission_1" type="radio" name="_ctl0:WorkForm:CustomerContact_bDimission"
+                                                            value="True" /><label for="_ctl0_WorkForm_CustomerContact_bDimission_1">离职</label>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                        <td style="width: 70px;" sign="1">
+                                            离职日期：
+                                        </td>
+                                        <td sign="1">
+                                            <input name="_ctl0:WorkForm:CustomerContact_dDimissionTime" type="text" id="_ctl0_WorkForm_CustomerContact_dDimissionTime"
+                                                onclick="setday(this)" onfocus="blur()" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 70px;">
+                                            职位：
+                                        </td>
+                                        <td>
+                                            <input name="_ctl0:WorkForm:CustomerContact_sHeadship" type="text" id="_ctl0_WorkForm_CustomerContact_sHeadship" />
+                                        </td>
+                                        <td style="width: 70px;">
+                                            角色：
+                                        </td>
+                                        <td>
+                                            <select name="_ctl0:WorkForm:CustomerContact_iClientRoleID" id="_ctl0_WorkForm_CustomerContact_iClientRoleID"
+                                                style="width: 136px;">
+                                                <option selected="selected" value="-1">--请选择--</option>
+                                                <option value="1">HR</option>
+                                                <option value="2">面试官</option>
+                                                <option value="3">技术负责人</option>
+                                                <option value="4">财务负责人</option>
+                                                <option value="5">使用人</option>
+                                                <option value="6">引导人</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 70px;">
+                                            办公电话：
+                                        </td>
+                                        <td>
+                                            <input name="_ctl0:WorkForm:CustomerContact_sOfficeTel" type="text" id="_ctl0_WorkForm_CustomerContact_sOfficeTel" /><span
+                                                class='required' id='CustomerContact_sOfficeTel' style='color: red'>*</span>
+                                        </td>
+                                        <td style="width: 70px;">
+                                            手机：
+                                        </td>
+                                        <td>
+                                            <input name="_ctl0:WorkForm:CustomerContact_sMobile" type="text" id="_ctl0_WorkForm_CustomerContact_sMobile" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 70px;">
+                                            传真号码：
+                                        </td>
+                                        <td>
+                                            <input name="_ctl0:WorkForm:CustomerContact_sOfficeFax" type="text" id="_ctl0_WorkForm_CustomerContact_sOfficeFax" />
+                                        </td>
+                                        <td style="width: 70px;">
+                                            电子邮件：
+                                        </td>
+                                        <td>
+                                            <input name="_ctl0:WorkForm:CustomerContact_sEmail" type="text" id="_ctl0_WorkForm_CustomerContact_sEmail" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 70px;">
+                                            MSN(QQ)：
+                                        </td>
+                                        <td>
+                                            <input name="_ctl0:WorkForm:CustomerContact_sOtherContact" type="text" id="_ctl0_WorkForm_CustomerContact_sOtherContact" />
+                                        </td>
+                                        <td style="width: 70px;">
+                                            地址：
+                                        </td>
+                                        <td>
+                                            <input name="_ctl0:WorkForm:CustomerContact_sAddress" type="text" id="_ctl0_WorkForm_CustomerContact_sAddress" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 70px;">
+                                            邮政编码：
+                                        </td>
+                                        <td>
+                                            <input name="_ctl0:WorkForm:CustomerContact_sZip" type="text" id="_ctl0_WorkForm_CustomerContact_sZip" />
+                                        </td>
+                                        <td style="width: 70px;">
+                                            认可程度：
+                                        </td>
+                                        <td>
+                                            <select name="_ctl0:WorkForm:CustomerContact_iClientRecognizeID" id="_ctl0_WorkForm_CustomerContact_iClientRecognizeID"
+                                                style="width: 136px;">
+                                                <option selected="selected" value="-1">--请选择--</option>
+                                                <option value="1">不认可</option>
+                                                <option value="2">一般认可</option>
+                                                <option value="3">非常认可</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 70px;">
+                                            重要程度：
+                                        </td>
+                                        <td>
+                                            <select name="_ctl0:WorkForm:CustomerContact_iClientImportanceID" id="_ctl0_WorkForm_CustomerContact_iClientImportanceID"
+                                                style="width: 136px;">
+                                                <option selected="selected" value="-1">--请选择--</option>
+                                                <option value="1">非常重要</option>
+                                                <option value="2">重要</option>
+                                                <option value="3">一般</option>
+                                                <option value="4">较弱</option>
+                                            </select>
+                                        </td>
+                                        <td style="width: 70px;">
+                                            关系：
+                                        </td>
+                                        <td>
+                                            <select name="_ctl0:WorkForm:CustomerContact_iClientRelationID" id="_ctl0_WorkForm_CustomerContact_iClientRelationID"
+                                                style="width: 136px;">
+                                                <option selected="selected" value="-1">--请选择--</option>
+                                                <option value="1">紧密</option>
+                                                <option value="2">好</option>
+                                                <option value="3">一般</option>
+                                                <option value="4">游离</option>
+                                                <option value="5">排斥</option>
+                                                <option value="6">反感</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 70px;">
+                                            联系对象：
+                                        </td>
+                                        <td>
+                                            <input type="hidden" name="_ctl0:WorkForm:CustomerContact_sManager" id="_ctl0_WorkForm_CustomerContact_sManager" /><input
+                                                name="_ctl0:WorkForm:CustomerContact_sManager_Name" type="text" id="_ctl0_WorkForm_CustomerContact_sManager_Name"
+                                                onfocus="blur()" /><input type="button" class="button" style="width: 20px" value="..."
+                                                    onclick="selectContactPerson('_ctl0_WorkForm_CustomerContact_sManager','_ctl0_WorkForm_CustomerContact_sManager_Name')" />
+                                        </td>
+                                        <td style="width: 70px;" sign="2">
+                                            身份证：
+                                        </td>
+                                        <td sign="2">
+                                            <input name="_ctl0:WorkForm:CustomerContact_sIDCard" type="text" id="_ctl0_WorkForm_CustomerContact_sIDCard" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 70px;" sign="2">
+                                            出生地：
+                                        </td>
+                                        <td sign="2">
+                                            <input name="_ctl0:WorkForm:CustomerContact_sHomeplace" type="text" id="_ctl0_WorkForm_CustomerContact_sHomeplace" />
+                                        </td>
+                                        <td style="width: 70px;" sign="2">
+                                            已婚有子：
+                                        </td>
+                                        <td sign="2">
+                                            <input name="_ctl0:WorkForm:CustomerContact_sChildren" type="text" id="_ctl0_WorkForm_CustomerContact_sChildren" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 70px;" sign="2">
+                                            出生日期：
+                                        </td>
+                                        <td sign="2">
+                                            <input name="_ctl0:WorkForm:CustomerContact_dBirthday" type="text" id="_ctl0_WorkForm_CustomerContact_dBirthday"
+                                                onclick="setday(this)" onfocus="blur()" />
+                                        </td>
+                                        <td style="width: 70px;" sign="2">
+                                            属相：
+                                        </td>
+                                        <td sign="2">
+                                            <select name="_ctl0:WorkForm:CustomerContact_iAnimalSignID" id="_ctl0_WorkForm_CustomerContact_iAnimalSignID"
+                                                style="width: 136px;">
+                                                <option selected="selected" value="-1">--请选择--</option>
+                                                <option value="1">属鼠</option>
+                                                <option value="2">属牛</option>
+                                                <option value="3">属虎</option>
+                                                <option value="4">属兔</option>
+                                                <option value="5">属龙</option>
+                                                <option value="6">属蛇</option>
+                                                <option value="7">属马</option>
+                                                <option value="8">属羊</option>
+                                                <option value="9">属猴</option>
+                                                <option value="10">属鸡</option>
+                                                <option value="11">属狗</option>
+                                                <option value="12">属猪</option>
+                                                <option value="13">未知</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 70px;" sign="2">
+                                            星座：
+                                        </td>
+                                        <td sign="2">
+                                            <select name="_ctl0:WorkForm:CustomerContact_iConstellationID" id="_ctl0_WorkForm_CustomerContact_iConstellationID"
+                                                style="width: 136px;">
+                                                <option selected="selected" value="-1">--请选择--</option>
+                                                <option value="3">白羊座</option>
+                                                <option value="4">金牛座</option>
+                                                <option value="5">双子座</option>
+                                                <option value="6">巨蟹座</option>
+                                                <option value="7">狮子座</option>
+                                                <option value="8">处女座</option>
+                                                <option value="9">天秤座</option>
+                                                <option value="10">天蝎座</option>
+                                                <option value="11">射手座</option>
+                                                <option value="12">双鱼座</option>
+                                                <option value="13">摩羯座</option>
+                                                <option value="15">未知</option>
+                                                <option value="14">宝瓶座</option>
+                                            </select>
+                                        </td>
+                                        <td style="width: 70px;" sign="2">
+                                            婚姻状况：
+                                        </td>
+                                        <td sign="2">
+                                            <select name="_ctl0:WorkForm:CustomerContact_iWedlockID" id="_ctl0_WorkForm_CustomerContact_iWedlockID"
+                                                style="width: 136px;">
+                                                <option selected="selected" value="-1">--请选择--</option>
+                                                <option value="1">已婚</option>
+                                                <option value="2">未婚</option>
+                                                <option value="3">未知</option>
+                                                <option value="4">家庭成员</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 70px;" sign="2">
+                                            民族：
+                                        </td>
+                                        <td sign="2">
+                                            <select name="_ctl0:WorkForm:CustomerContact_iNationID" id="_ctl0_WorkForm_CustomerContact_iNationID"
+                                                style="width: 136px;">
+                                                <option selected="selected" value="-1">--请选择--</option>
+                                                <option value="1">汉族</option>
+                                                <option value="2">回族</option>
+                                                <option value="3">蒙古族</option>
+                                                <option value="4">满族</option>
+                                                <option value="5">朝鲜族</option>
+                                                <option value="6">赫哲族</option>
+                                                <option value="7">达斡尔族</option>
+                                                <option value="8">鄂温克族</option>
+                                                <option value="9">鄂伦春族</option>
+                                                <option value="10">东乡族</option>
+                                                <option value="11">土族</option>
+                                                <option value="12">撒拉族</option>
+                                                <option value="13">保安族</option>
+                                                <option value="14">裕固族</option>
+                                                <option value="15">维吾尔族</option>
+                                                <option value="16">哈萨克族</option>
+                                                <option value="17">柯尔克孜族</option>
+                                                <option value="18">锡伯族</option>
+                                                <option value="19">塔吉克族</option>
+                                                <option value="20">乌孜别克族</option>
+                                                <option value="21">俄罗斯族</option>
+                                                <option value="22">塔塔尔族</option>
+                                                <option value="23">藏族</option>
+                                                <option value="24">门巴族</option>
+                                                <option value="25">珞巴族</option>
+                                                <option value="26">羌族</option>
+                                                <option value="27">彝族</option>
+                                                <option value="28">白族</option>
+                                                <option value="29">哈尼族</option>
+                                                <option value="30">傣族</option>
+                                                <option value="31">傈僳族</option>
+                                                <option value="32">佤族</option>
+                                                <option value="33">拉祜族</option>
+                                                <option value="34">纳西族</option>
+                                                <option value="35">景颇族</option>
+                                                <option value="36">布朗族</option>
+                                                <option value="37">阿昌族</option>
+                                                <option value="38">普米族</option>
+                                                <option value="39">怒族</option>
+                                                <option value="40">德昂族</option>
+                                                <option value="41">独龙族</option>
+                                                <option value="42">基诺族</option>
+                                                <option value="43">苗族</option>
+                                                <option value="44">布依族</option>
+                                                <option value="45">侗族</option>
+                                                <option value="46">水族</option>
+                                                <option value="47">仡佬族</option>
+                                                <option value="48">壮族</option>
+                                                <option value="49">瑶族</option>
+                                                <option value="50">仫佬族</option>
+                                                <option value="51">毛南族</option>
+                                                <option value="52">京族</option>
+                                                <option value="53">土家族</option>
+                                                <option value="54">黎族</option>
+                                                <option value="55">畲族</option>
+                                                <option value="56">高山族</option>
+                                            </select>
+                                        </td>
+                                        <td style="width: 70px;" sign="2">
+                                            学历：
+                                        </td>
+                                        <td sign="2">
+                                            <select name="_ctl0:WorkForm:CustomerContact_iEduID" id="_ctl0_WorkForm_CustomerContact_iEduID"
+                                                style="width: 136px;">
+                                                <option selected="selected" value="-1">--请选择--</option>
+                                                <option value="1">小学</option>
+                                                <option value="2">初中</option>
+                                                <option value="3">高职</option>
+                                                <option value="4">中专</option>
+                                                <option value="5">高中</option>
+                                                <option value="6">大专</option>
+                                                <option value="7">本科/学士</option>
+                                                <option value="8">硕士</option>
+                                                <option value="9">博士</option>
+                                                <option value="10">博士后</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 70px;" sign="2">
+                                            专业：
+                                        </td>
+                                        <td sign="2">
+                                            <select name="_ctl0:WorkForm:CustomerContact_iProfessionID" id="_ctl0_WorkForm_CustomerContact_iProfessionID"
+                                                style="width: 136px;">
+                                                <option selected="selected" value="-1">--请选择--</option>
+                                                <option value="1">一般职员</option>
+                                                <option value="2">专业人员</option>
+                                                <option value="3">专业工程师</option>
+                                                <option value="4">专业高工</option>
+                                                <option value="5">中级管理人员</option>
+                                                <option value="6">高级管理人员</option>
+                                            </select>
+                                        </td>
+                                        <td style="width: 70px;" sign="2">
+                                            健康状况：
+                                        </td>
+                                        <td sign="2">
+                                            <select name="_ctl0:WorkForm:CustomerContact_iHealthID" id="_ctl0_WorkForm_CustomerContact_iHealthID"
+                                                style="width: 136px;">
+                                                <option selected="selected" value="-1">--请选择--</option>
+                                                <option value="1">良好</option>
+                                                <option value="2">体弱</option>
+                                                <option value="3">优秀</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 70px;" sign="2">
+                                            信仰：
+                                        </td>
+                                        <td sign="2">
+                                            <select name="_ctl0:WorkForm:CustomerContact_iBelieveInID" id="_ctl0_WorkForm_CustomerContact_iBelieveInID"
+                                                style="width: 136px;">
+                                                <option selected="selected" value="-1">--请选择--</option>
+                                                <option value="1">佛教</option>
+                                                <option value="2">基督教</option>
+                                                <option value="3">未知</option>
+                                                <option value="4">无神论者</option>
+                                                <option value="5">道教</option>
+                                            </select>
+                                        </td>
+                                        <td style="width: 70px;" sign="2">
+                                            体型：
+                                        </td>
+                                        <td sign="2">
+                                            <select name="_ctl0:WorkForm:CustomerContact_iBodyID" id="_ctl0_WorkForm_CustomerContact_iBodyID"
+                                                style="width: 136px;">
+                                                <option selected="selected" value="-1">--请选择--</option>
+                                                <option value="1">偏胖</option>
+                                                <option value="2">偏瘦</option>
+                                                <option value="3">中等身材</option>
+                                                <option value="4">身材高大</option>
+                                                <option value="5">身材瘦小</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 70px;" sign="2">
+                                            吸烟：
+                                        </td>
+                                        <td sign="2">
+                                            <select name="_ctl0:WorkForm:CustomerContact_iSmokeID" id="_ctl0_WorkForm_CustomerContact_iSmokeID"
+                                                style="width: 136px;">
+                                                <option selected="selected" value="-1">--请选择--</option>
+                                                <option value="1">吸烟</option>
+                                                <option value="2">不吸烟</option>
+                                            </select>
+                                        </td>
+                                        <td style="width: 70px;" sign="2">
+                                            喝酒：
+                                        </td>
+                                        <td sign="2">
+                                            <select name="_ctl0:WorkForm:CustomerContact_iAlcoholID" id="_ctl0_WorkForm_CustomerContact_iAlcoholID"
+                                                style="width: 136px;">
+                                                <option selected="selected" value="-1">--请选择--</option>
+                                                <option value="1">喝酒</option>
+                                                <option value="2">不喝酒</option>
+                                                <option value="3">少量饮酒</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 70px;" sign="2">
+                                            身高：
+                                        </td>
+                                        <td sign="2">
+                                            <input name="_ctl0:WorkForm:CustomerContact_iSurfaceStature" type="text" value="0"
+                                                id="_ctl0_WorkForm_CustomerContact_iSurfaceStature" />
+                                        </td>
+                                        <td style="width: 70px;" sign="2">
+                                            体重：
+                                        </td>
+                                        <td sign="2">
+                                            <input name="_ctl0:WorkForm:CustomerContact_fSurfaceAvoirdupois" type="text" value="0"
+                                                id="_ctl0_WorkForm_CustomerContact_fSurfaceAvoirdupois" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 70px;" sign="2">
+                                            视力：
+                                        </td>
+                                        <td sign="2">
+                                            <input name="_ctl0:WorkForm:CustomerContact_sSurfaceEye" type="text" id="_ctl0_WorkForm_CustomerContact_sSurfaceEye" />
+                                        </td>
+                                        <td style="width: 70px;" sign="2">
+                                            其他：
+                                        </td>
+                                        <td sign="2">
+                                            <input name="_ctl0:WorkForm:CustomerContact_sSurfaceOther" type="text" id="_ctl0_WorkForm_CustomerContact_sSurfaceOther" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 70px;">
+                                            创建人：
+                                        </td>
+                                        <td>
+                                            <input type="hidden" name="_ctl0:WorkForm:CustomerContact_iCreatorID" id="_ctl0_WorkForm_CustomerContact_iCreatorID"
+                                                value="0" /><input name="_ctl0:WorkForm:CustomerContact_iCreatorID_Name" type="text"
+                                                    id="_ctl0_WorkForm_CustomerContact_iCreatorID_Name" onfocus="blur()" style="width: 70px;" />
+                                        </td>
+                                        <td style="width: 70px;">
+                                            创建时间：
+                                        </td>
+                                        <td>
+                                            <input name="_ctl0:WorkForm:CustomerContact_dCreateTime" type="text" value="2013-04-27 16:56:12"
+                                                id="_ctl0_WorkForm_CustomerContact_dCreateTime" onfocus="blur()" style="width: 121px;" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 70px;">
+                                            项目：
+                                        </td>
+                                        <td colspan="3">
+                                            <input type="hidden" name="_ctl0:WorkForm:CustomerContact_sDemandItem" id="_ctl0_WorkForm_CustomerContact_sDemandItem" /><input
+                                                name="_ctl0:WorkForm:CustomerContact_sDemandItem_Name" type="text" id="_ctl0_WorkForm_CustomerContact_sDemandItem_Name"
+                                                onfocus="blur()" style="width: 94%;" /><input type="button" class="button" style="width: 20px"
+                                                    value="..." onclick="selectDemand('_ctl0_WorkForm_CustomerContact_sDemandItem','_ctl0_WorkForm_CustomerContact_sDemandItem_Name')" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 70px;">
+                                            关心重点：
+                                        </td>
+                                        <td colspan="3">
+                                            <input type="hidden" name="_ctl0:WorkForm:CustomerContact_sClientCare" id="_ctl0_WorkForm_CustomerContact_sClientCare" /><input
+                                                name="_ctl0:WorkForm:CustomerContact_sClientCare_Name" type="text" id="_ctl0_WorkForm_CustomerContact_sClientCare_Name"
+                                                onfocus="blur()" style="width: 94%;" /><input type="button" class="button" style="width: 20px"
+                                                    value="..." onclick="ChooseBaseData('ClientCare','_ctl0_WorkForm_CustomerContact_sClientCare')" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 70px;">
+                                            利益诉求：
+                                        </td>
+                                        <td colspan="3">
+                                            <input type="hidden" name="_ctl0:WorkForm:CustomerContact_sClientBenefit" id="_ctl0_WorkForm_CustomerContact_sClientBenefit" /><input
+                                                name="_ctl0:WorkForm:CustomerContact_sClientBenefit_Name" type="text" id="_ctl0_WorkForm_CustomerContact_sClientBenefit_Name"
+                                                onfocus="blur()" style="width: 94%;" /><input type="button" class="button" style="width: 20px"
+                                                    value="..." onclick="ChooseBaseData('ClientBenefit','_ctl0_WorkForm_CustomerContact_sClientBenefit')" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 70px;">
+                                            备注：
+                                        </td>
+                                        <td colspan="3">
+                                            <textarea name="_ctl0:WorkForm:CustomerContact_sMemo" id="_ctl0_WorkForm_CustomerContact_sMemo"
+                                                style="width: 96%; height: 45px;"></textarea>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 70px;" sign="2">
+                                            个人经历：
+                                        </td>
+                                        <td colspan="3" sign="2">
+                                            <textarea name="_ctl0:WorkForm:CustomerContact_sHistory" id="_ctl0_WorkForm_CustomerContact_sHistory"
+                                                style="width: 96%; height: 45px;"></textarea>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div style="display: none">
+                                <input name="_ctl0:WorkForm:Customer_iDeptID" type="hidden" id="_ctl0_WorkForm_Customer_iDeptID"
+                                    value="8" />
+                                <input name="_ctl0:WorkForm:Customer_iOrgID" type="hidden" id="_ctl0_WorkForm_Customer_iOrgID"
+                                    value="2" />
+                                <input name="_ctl0:WorkForm:Customer_sCompanyCode" type="hidden" id="_ctl0_WorkForm_Customer_sCompanyCode" />
+                                <input name="_ctl0:WorkForm:Source_bIsPublic" type="checkbox" id="_ctl0_WorkForm_Source_bIsPublic" />
+                                <input name="_ctl0:WorkForm:Source_FK_TypeID" type="hidden" id="_ctl0_WorkForm_Source_FK_TypeID" />
+                                <input name="_ctl0:WorkForm:Source_sTel" type="hidden" id="_ctl0_WorkForm_Source_sTel" />
+                                <input name="_ctl0:WorkForm:Source_sName" type="hidden" id="_ctl0_WorkForm_Source_sName" />
+                                <input name="_ctl0:WorkForm:Source_sNameE" type="hidden" id="_ctl0_WorkForm_Source_sNameE" />
+                                <input name="_ctl0:WorkForm:Source_sMemo" type="hidden" id="_ctl0_WorkForm_Source_sMemo" />
+                                <input name="_ctl0:WorkForm:Source_iManagerID" type="hidden" id="_ctl0_WorkForm_Source_iManagerID" />
+                                <input name="_ctl0:WorkForm:RemindLoopPK_ID" type="hidden" id="_ctl0_WorkForm_RemindLoopPK_ID"
+                                    value="159863f5-7833-4eeb-b6cb-42d017c683cf" />
+                                <input name="_ctl0:WorkForm:hidCodeVisble" type="hidden" id="_ctl0_WorkForm_hidCodeVisble"
+                                    value="1" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="grid">
+                    </div>
+                </td>
+            </tr>
+        </table>
+        <p class="tipbox" id="tipbox" style="display: none">
+        </p>
+        <script type="text/javascript">
+            try {
+                if ($ && $.version) {
+                    var tipbox = $("#tipbox");
+                    $(".tip").bindEvent("mouseover", function () {
+                        tipbox.html(this.getAttribute("tip"));
+                        var pos = $(this).position();
+                        tipbox.position(pos.top, pos.left + 20);
+                        tipbox.show();
+                    })
+                    $(".tip").bindEvent("mouseout", function () {
+                        tipbox.hide();
+                    })
+                    $(".money").live("click", function () {
+                        if (this.tagName && this.tagName == "INPUT") {
+                            this.select();
+                        }
+                    })
+                }
+            } catch (e) { }
+        </script>
+        <script language="javascript" type="text/javascript">
+            var obj = document.getElementsByTagName("input");
+            for (var i = 0; i < obj.length; i++) {
+                if (obj[i].className == "Line") continue;
+                if (obj[i].type == "text" && obj[i].className.indexOf("noborder") == -1) { obj[i].className += " Line" }
+            }
+            function userinfo(id) {
+                window.open('/OM/Settings/UserInfo.aspx?PK_ID=' + id, "_blank", "height=" + 450 + ",width=" + 550 + ",toolbar=no,status=no,resizable=yes,scrollbars=auto");
+            }
+        </script>
+        </form>
+    </div>
+</body>
+</html>

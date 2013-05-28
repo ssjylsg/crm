@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2">
+  <class name="WebCrm.Model.CategoryItem, WebCrm.Model" table="Crm_CategoryItem">
+    <id name="Id" type="Int32" unsaved-value="0">
+      <column name="Id" length="16" sql-type="int" not-null="true" unique="true" index="PK_CategoryItem"/>
+      <generator class="assigned" />
+    </id>
+    <many-to-one name="Category" class="WebCrm.Model.Category, WebCrm.Model">
+      <column name="CategoryId" length="16" sql-type="int" not-null="false"/>
+    </many-to-one>
+    <many-to-one name="ParentItem" class="WebCrm.Model.CategoryItem, WebCrm.Model">
+      <column name="ParentItemId" length="16" sql-type="int" not-null="false"/>
+    </many-to-one>
+
+    <property name="Name" type="String">
+      <column name="Name" length="150" sql-type="nvarchar" not-null="false"/>
+    </property>
+    <property name="Description" type="String">
+      <column name="Description" length="150" sql-type="nvarchar" not-null="false"/>
+    </property>
+    <property name="Deleted" type="Boolean">
+      <column name="Deleted"  length="1" sql-type="bit" not-null="false"/>
+    </property>
+    <property name="OrderIndex" type="Int16">
+      <column name="OrderIndex" length="2" sql-type="smallint" not-null="false"/>
+    </property>
+    <bag name="ChildItems" inverse="true" order-by="OrderIndex">
+      <key column="ParentItemId"></key>
+      <one-to-many class="WebCrm.Model.CategoryItem, WebCrm.Model"></one-to-many>
+    </bag>
+    <property name="OtherInfo">
+      <column name ="OtherInfo"></column>
+    </property>
+  </class>
+</hibernate-mapping>

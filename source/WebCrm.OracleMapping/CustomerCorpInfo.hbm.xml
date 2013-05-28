@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" default-access="property" auto-import="true" default-cascade="none" default-lazy="true">
+  <class name="WebCrm.Model.CustomerCorpInfo, WebCrm.Model" table="CRM_CORP_INFO">
+    <id name="Id" type="Int32" unsaved-value="null">
+      <column name="ID" length="4" sql-type="int" not-null="true" unique="true" index="PK_CRM_CORP_INFO"/>
+      <generator class="assigned" />
+    </id>
+    <property name="Name" type="String">
+      <column name="Name" length="512" sql-type="nvarchar" not-null="false"/>
+    </property> 
+    <many-to-one name="CorpType" class="WebCrm.Model.CategoryItem, WebCrm.Model">
+      <column name="CorpType" length="16" sql-type="int" not-null="false"/>
+    </many-to-one>
+    <property name="Url" type="String">
+      <column name="Url" length="512" sql-type="nvarchar" not-null="false"/>
+    </property>
+    <property name="LinkMan" type="String">
+      <column name="LinkMan" length="64" sql-type="nvarchar" not-null="false"/>
+    </property>
+    <property name="LinkManTel" type="String">
+      <column name="LinkManTel" length="512" sql-type="nvarchar" not-null="false"/>
+    </property>
+    <property name="TelPhone" type="String">
+      <column name="TelPhone" length="512" sql-type="nvarchar" not-null="false"/>
+    </property>
+    <property name="Fax" type="String">
+      <column name="Fax" length="512" sql-type="nvarchar" not-null="false"/>
+    </property>
+    <property name="Address" type="String">
+      <column name="Address" length="512" sql-type="nvarchar" not-null="false"/>
+    </property>
+    <property name="QQ" type="String">
+      <column name="QQ" length="512" sql-type="nvarchar" not-null="false"/>
+    </property>
+    <property name="Remark" type="String">
+      <column name="Remark" length="1024" sql-type="nvarchar" not-null="false"/>
+    </property>
+    <property name="CreateTime" type="DateTime">
+      <column name="CreateTime" length="3" sql-type="date" not-null="false"/>
+    </property>
+    <property name="ModifyTime" type="DateTime">
+      <column name="ModifyTime" length="3" sql-type="date" not-null="false"/>
+    </property>
+    <many-to-one name="Customer" class="WebCrm.Model.Customer, WebCrm.Model">
+      <column name="CustomerID" length="16" sql-type="int" not-null="false"/>
+    </many-to-one>
+    <property name="Deleted" type="bool">
+      <column name="Deleted" length="4" sql-type="int" not-null="false"/>
+    </property>
+  </class>
+</hibernate-mapping>

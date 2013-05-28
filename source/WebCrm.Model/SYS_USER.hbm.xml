@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2"
+   assembly="WebCX.Model"
+   namespace="WebCX.Model">
+
+  <class name ="SYS_USER">
+    <id name="ID" column ="ID">
+      <generator class ="native"/>
+    </id>
+    <property name ="NAME"/>
+    <property name ="PWD"/>
+    <property name ="REALNAME"/>
+    <property name ="SEX"/>
+    <property name ="SORT"/>
+    <property name ="CREATETIME"/>
+    <property name ="MODIFYTIME"/>
+    <property name ="OPTORID"/>
+  </class>
+</hibernate-mapping>

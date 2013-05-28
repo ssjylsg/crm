@@ -1,0 +1,40 @@
+@charset "utf-8";
+/* CSS Document */
+body{ font:"宋体"; font-size:12px; margin:0; padding:0; background:url(../images/login/bg.jpg) repeat-x;}
+a:link{color:#333;text-decoration:none;}
+a:visited{color:#333;text-decoration:none;}
+a:hover  {color:#FF0000;text-decoration:none;}
+a:active {color:#c00;text-decoration:none;}
+a{text-decoration:none; cursor:hand;}
+a img{border: none;}
+form,p,span,div,ol,h1,h2,h3,h4,h5,h6,img,select,input{margin:0;padding:0;}
+ul,li{margin:0; padding:0; list-style:none;}
+select,input{vertical-align:middle; }
+
+#container{ width:697px;margin:0 auto;}
+.content{  width:697px; height:535px; float:left; display:block; background:url(../images/login/photo_2.jpg) no-repeat;}
+.login{margin:178px 0 0 426px;}
+
+.login .text1{ width:145px; height:20px; line-height:20px; margin-top:15px;_margin-top:13px; border:0; background:none; color:#999;}
+.login .text2{ width:85px; height:20px;line-height:20px;padding-left:3px;margin-top:14px;_margin-top:13px;color:#999; margin-right:5px; border:none;border:0;background:none;}
+
+.login p img{ margin:12px 0 0 0px;}
+.login .yhm{ margin:15px 0 0 0;}
+.login .yhm input{ _margin:-3px 0 0 -5px; color:#999;}
+.login .buttn{ width:93px; height:27px; font-size:14px; margin-top:10px; cursor:pointer; display:inline-block; border:none;background:url(../images/login/anniu_1.png) no-repeat;}
+.content h1{ font-size:12px;  color:#849BAB; text-align:center; padding-top:130px; font-weight:normal;}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

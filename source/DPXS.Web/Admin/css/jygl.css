@@ -1,0 +1,40 @@
+@charset "utf-8";
+/* CSS Document */
+
+form,p,span,div,ol,h1,h2,h3,h4,h5,h6,table,td,img,select,input{margin:0;padding:0;}
+h1,h2,h3,h4,h5,h6{font-size:12px;font-weight:normal;}
+ul,li{margin:0; padding:0; list-style:none;}
+select,input{vertical-align:middle; _vertical-align:text-bottom;}
+
+html{overflow-y:scroll;}
+
+.table_juyun{ display:inline-block;}
+
+.ksxz{ display:block;background:#F5F9FC; padding:10px 0 10px 20px; border-bottom:1px solid #ccc;}
+.ksxz input{ vertical-align:middle; margin:0 10px 0 5px;}
+
+.ksxz .ys{ color:#ff6600;}
+.ksxz .ks{ color:#66CC33;}.ksxz .js{ color:#3300CC;}
+.ksxz .yl{ color:#FFCC33;}.ksxz .jj{ color:#FF99FF;}
+.ksxz .bks{ color:#CC0033;}.ksxz .sd{ color:#009;}
+
+.jygl{ width:100%;}
+.jygl tr td{border-right:1px solid #ccc;border-bottom:1px solid #ccc;}
+.jygl tr td a{ display:block;}
+.jygl .juxx{ height:26px;background:#F5F9FC; }
+.jygl .juxx td{padding-left:20px;}
+
+.jygl .hnle,.jygl .hen{ text-align:center; font-weight:bold; color:#666; height:26px;background:url(../images/open/table_bj.jpg) repeat-x;}
+.jygl .hnle{ margin-top:10px;}
+.jygl .hnle{ width:60px;}
+.jygl tr .hen{  text-align:center;}
+.jygl .han td:hover{ background:#64CD32; color:#fff;}
+
+.bcfh{ height:34px; background:url(../images/open/bcfh_bj.jpg) repeat-x;}
+.bcfh a{ width:62px; height:25px; line-height:25px; margin:5px 0 0 10px; border-top:1px solid #ccc; text-align:center; display:inline-block; background:url(../images/open/button1.jpg) no-repeat;}
+.jygl .han td{ cursor:pointer;}
+.jygl .han .bj1{ background:#64CD32; color:#fff;}
+.jygl .han .bj2{ background:#fff; color:#000;}
+.jygl .han .hnle:hover{background:url(../images/open/table_bj.jpg) repeat-x; color:#666;}
+
+.bj3{ background:#666;}

@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" default-access="property" auto-import="true" default-cascade="none" default-lazy="true">
+  <class name="WebCrm.Model.CustomerInfo, WebCrm.Model" table="Crm_CustomerInfo">
+    <id name="Id" type="Int32" unsaved-value="0">
+      <column name="ID" length="16" sql-type="int" not-null="true" unique="true" index="PK_CustomerInfo"/>
+      <generator class="assigned" />
+    </id>
+    <many-to-one name="RelationLevel" class="WebCrm.Model.CategoryItem, WebCrm.Model">
+      <column name="RelationLevel" length="16" sql-type="int" not-null="false"/>
+    </many-to-one>
+
+    <many-to-one name="LevelSort" class="WebCrm.Model.CategoryItem, WebCrm.Model">
+      <column name="LevelSortId" length="16" sql-type="int" not-null="false"/>
+    </many-to-one>
+    <property name="Identity" type="String">
+      <column name="[Identity]" length="20" sql-type="nvarchar" not-null="false"/>
+    </property>
+    <property name="IsMarry" type="Boolean">
+      <column name="IsMarry" length="1" sql-type="bit" not-null="false"/>
+    </property>
+    <property name="IsHasChild" type="Boolean">
+      <column name="IsHasChild" length="1" sql-type="bit" not-null="false"/>
+    </property>
+    <property name="Educational" type="WebCrm.Model.Educational, WebCrm.Model">
+      <column name="Educational" length="2" sql-type="smallint" not-null="false"/>
+    </property>
+    <property name="HealthState" type="WebCrm.Model.HealthState, WebCrm.Model">
+      <column name="HealthState" length="2" sql-type="smallint" not-null="false"/>
+    </property>
+    <property name="BodyType" type="WebCrm.Model.BodyType, WebCrm.Model">
+      <column name="BodyType" length="2" sql-type="smallint" not-null="false"/>
+    </property>
+    <property name="DrinkingLevel" type="WebCrm.Model.DrinkingLevel, WebCrm.Model">
+      <column name="DrinkingLevel" length="2" sql-type="smallint" not-null="false"/>
+    </property>
+    <property name="BodyWeight" type="Double">
+      <column name="BodyWeight" length="8" sql-type="float" not-null="false"/>
+    </property>
+    <property name="Other" type="String">
+      <column name="Other" length="500" sql-type="nvarchar" not-null="false"/>
+    </property>
+    <property name="CreateDate" type="DateTime">
+      <column name="CreateDate" length="3" sql-type="date" not-null="false"/>
+    </property>
+    <property name="Remark" type="String">
+      <column name="Remark" length="500" sql-type="nvarchar" not-null="false"/>
+    </property>
+    <property name="PersonalExperience" type="String">
+      <column name="PersonalExperience" length="500" sql-type="nvarchar" not-null="false"/>
+    </property>
+    <property name="ImportantLevel" type="WebCrm.Model.ImportantLevel, WebCrm.Model">
+      <column name="ImportanceLevel" length="2" sql-type="smallint" not-null="false"/>
+    </property>
+    <property name="Birthplace" type="String">
+      <column name="Birthplace" length="100" sql-type="nvarchar" not-null="false"/>
+    </property>
+    <property name="BirthDate">
+      <column name="BirthDate" length="3" sql-type="date" not-null="false"/>
+    </property>
+    <property name="Constellation" type="WebCrm.Model.Constellation, WebCrm.Model">
+      <column name="Constellation" length="2" sql-type="smallint" not-null="false"/>
+    </property>
+
+    <many-to-one name="NationalitySate" class="WebCrm.Model.CategoryItem, WebCrm.Model">
+      <column name="NationalitySate" length="16" sql-type="int" not-null="false"/>
+    </many-to-one>
+    <property name="AnimalSign" type="WebCrm.Model.AnimalSign, WebCrm.Model">
+      <column name="AnimalSign"/>
+    </property>
+    <property name="Field" type="WebCrm.Model.Field, WebCrm.Model">
+      <column name="Field" length="2" sql-type="smallint" not-null="false"/>
+    </property>
+    <many-to-one name="Belief" class="WebCrm.Model.CategoryItem, WebCrm.Model">
+      <column name="Belief" length="16" sql-type="int" not-null="false"/>
+    </many-to-one>
+    <property name="SmokeLevel">
+      <column name="SmokeLevel" length="2" sql-type="bit" not-null="false"/>
+    </property>
+    <property name="Height" type="Double">
+      <column name="Height" length="8" sql-type="float" not-null="false"/>
+    </property>
+    <property name="Vision" type="String">
+      <column name="Vision" length="50" sql-type="nvarchar" not-null="false"/>
+    </property>
+    <many-to-one name="CreatePerson" class="WebCrm.Model.OperatorUser, WebCrm.Model">
+      <column name="CreatePerson" length="16" sql-type="int" not-null="false"/>
+    </many-to-one>
+
+    <property name="Deleted" type="Boolean">
+      <column name="Deleted"  length="1" sql-type="bit" not-null="false"/>
+    </property>
+    <property name="Age">
+      <column name="Age"></column>
+    </property>
+    <property name="ContactName">
+      <column name="ContactName "></column>
+    </property>
+    <property name="OfficalTelNum">
+      <column name="OfficalTelNum"></column>
+    </property>
+    <property name="Mobile">
+      <column name="Mobile"></column>
+    </property>
+    <property name="Email">
+      <column name="Email"></column>
+    </property>
+    <property name="Adress">
+      <column name="Adress"></column>
+    </property>
+    <property name="Zip">
+      <column name="Zip"></column>
+    </property>
+  </class>
+</hibernate-mapping>

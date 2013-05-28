@@ -1,0 +1,19 @@
+﻿<?xml version="1.0"  encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" assembly="WebCX.Model" namespace="WebCX.Model">
+  <class name="WEB_REPORT_DATASOURCE" table="WEB_REPORT_DATASOURCE">
+    <id name="ID" column="ID" type="int">
+      <generator class ="native">
+        <param name="sequence">SEQ_WEB_REPORTDATASOURCE</param>
+      </generator>
+    </id>
+    <property name="NAME" column="NAME" type="string"  />
+    <property name="SQL" column="SQL" type="string"  />
+    <property name="REPORTINFOID" column="REPORTINFOID" type="int"  />
+    <property name="SORT" column="SORT" type="int"  />
+    <property name="CREATETIME" column="CREATETIME" type="DateTime"  />
+    <property name="MODIFYTIME" column="MODIFYTIME" type="DateTime"  />
+    <property name="DELETED" column="DELETED" type="int"  />
+    <property name="REMARK" column="REMARK" type="string"  />
+    <property name="CREATE_LOGIN_ID" column="CREATE_LOGIN_ID" type="int"  />
+  </class>
+</hibernate-mapping>

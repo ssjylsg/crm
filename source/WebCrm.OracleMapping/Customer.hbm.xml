@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" default-access="property" auto-import="true" default-cascade="none" default-lazy="true">
+  <class name="WebCrm.Model.Customer, WebCrm.Model" table="Crm_Customer">
+    <id name="Id" type="Int32" unsaved-value="0">
+      <column name="Id" length="16" sql-type="int" not-null="true" unique="true" index="PK_CRM_CUSTOMER"/>
+      <generator class="assigned" />
+    </id>
+    <property name="AccType" type=" WebCrm.Model.CustomerIdentification, WebCrm.Model">
+      <column name="AccType" length="2" sql-type="smallint" not-null="false"/>
+    </property>
+    <many-to-one name="CustomerType" class="WebCrm.Model.CategoryItem, WebCrm.Model">
+      <column name="CustomerType" length="16" sql-type="int" not-null="false"/>
+    </many-to-one>
+    <many-to-one name="Area" class="WebCrm.Model.CategoryItem, WebCrm.Model">
+      <column name="Area" length="16" sql-type="int" not-null="false"/>
+    </many-to-one>
+    <many-to-one name="BelongPerson" class="WebCrm.Model.OperatorUser, WebCrm.Model">
+      <column name="BelongPerson" length="16" sql-type="int" not-null="false"/>
+    </many-to-one>
+    <many-to-one name="CreatePerson" class="WebCrm.Model.OperatorUser, WebCrm.Model">
+      <column name="CreatePerson" length="16" sql-type="int" not-null="false"/>
+    </many-to-one>
+    <property name="Car" type="String">
+      <column name="Car" length="150" sql-type="nvarchar" not-null="false"/>
+    </property>
+    <property name="Code" type="String">
+      <column name="Code" length="150" sql-type="nvarchar" not-null="false"/>
+    </property>
+    <many-to-one name="Cagegory" class="WebCrm.Model.CategoryItem, WebCrm.Model">
+      <column name="Cagegory" length="16" sql-type="int" not-null="false"/>
+    </many-to-one>
+
+    <property name="Name" type="String">
+      <column name="Name" length="10" sql-type="nchar" not-null="false"/>
+    </property>
+    <many-to-one name="CreditRating" class="WebCrm.Model.CategoryItem, WebCrm.Model">
+      <column name="CreditRating" length="16" sql-type="int" not-null="false"/>
+    </many-to-one>
+    <many-to-one name="Company" class="WebCrm.Model.Company, WebCrm.Model">
+      <column name="Company" length="4" sql-type="int" not-null="false"/>
+    </many-to-one>
+
+    <property name="ShortName" type="String">
+      <column name="ShortName" length="10" sql-type="nchar" not-null="false"/>
+    </property>
+    <property name="LastSpendDate" type="DateTime">
+      <column name="LastSpendDate" length="3" sql-type="date" not-null="false"/>
+    </property>
+    <property name="TotalScore" type="Int32">
+      <column name="TotalScore" length="4" sql-type="int" not-null="false"/>
+    </property>
+    <property name="Deleted" type="Boolean">
+      <column name="Deleted"  length="1" sql-type="bit" not-null="false"/>
+    </property>
+    <many-to-one name="MemberCard" class="WebCrm.Model.MembershipCard, WebCrm.Model">
+      <column name="MemberCard" length="16" sql-type="int" not-null="false"/>
+    </many-to-one>
+    <property name="CreateTime">
+      <column name="CreateTime"></column>
+    </property>
+    <property name="ModifyTime">
+      <column name="ModifyTime"></column>
+    </property>
+    <many-to-one name="RelationLevel" class="WebCrm.Model.CategoryItem, WebCrm.Model">
+      <column name="RelationLevel" length="16" sql-type="int" not-null="false"/>
+    </many-to-one>
+
+    <many-to-one name="LevelSort" class="WebCrm.Model.CategoryItem, WebCrm.Model">
+      <column name="LevelSort" length="16" sql-type="int" not-null="false"/>
+    </many-to-one>
+    <property name="ImportantLevel" type="WebCrm.Model.ImportantLevel, WebCrm.Model">
+      <column name="ImportantLevel" length="2" sql-type="smallint" not-null="false"/>
+    </property>
+    <property name="Remark">
+      <column name="Remark"></column>
+    </property>
+    <many-to-one name="CustomerSource" class="WebCrm.Model.CategoryItem, WebCrm.Model">
+      <column name="CustomerSource" length="16" sql-type="int" not-null="false"/>
+    </many-to-one>
+    <many-to-one name="CustomerBusiness" class="WebCrm.Model.CategoryItem, WebCrm.Model">
+      <column name="CustomerBusiness" length="16" sql-type="int" not-null="false"/>
+    </many-to-one>
+  </class>
+</hibernate-mapping>

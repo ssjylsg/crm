@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2">
+  <class name="WebCrm.Model.Role, WebCrm.Model" table="Crm_`Role`">
+    <id name="Id" type="int" >
+      <column name="ID" length="16" sql-type="int" not-null="true" unique="true" index="PK_Role"/>
+      <generator class="assigned" />
+    </id>
+    <property name="Name" type="String">
+      <column name="Name" length="50" sql-type="nvarchar" not-null="true"/>
+    </property>
+    <property name="Deleted" type="Boolean">
+       <column name="Deleted"  length="1" sql-type="bit" not-null="false"/>
+    </property>
+  </class>
+</hibernate-mapping>

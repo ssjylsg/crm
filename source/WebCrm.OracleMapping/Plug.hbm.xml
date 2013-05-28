@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" default-access="property" auto-import="true" default-cascade="none" default-lazy="true">
+  <class name="WebCrm.Model.Plug, WebCrm.Model" table="Sys_Plug">
+    <id name="Id" type="Int32" unsaved-value="null">
+      <column name="ID" length="4" sql-type="int" not-null="true" unique="true" index="PK_SYS_PLUG"/>
+      <generator class="assigned" />
+    </id> 
+    <many-to-one name="Parent" class="WebCrm.Model.Plug, WebCrm.Model">
+      <column name="ParentID" length="4" sql-type="int" />
+    </many-to-one>
+
+    <property name="PlugCode" type="String">
+      <column name="PlugCode" length="32" sql-type="nvarchar" not-null="false"/>
+    </property>
+    <property name="PlugName" type="String">
+      <column name="PlugName" length="64" sql-type="nvarchar" not-null="false"/>
+    </property>
+    <property name="PlugFile" type="String">
+      <column name="PlugFile" length="256" sql-type="nvarchar" not-null="false"/>
+    </property>
+    <property name="PlugWebFile" type="String">
+      <column name="PlugWebFile" length="256" sql-type="nvarchar" not-null="false"/>
+    </property>
+    <property name="FileType" type="Int32">
+      <column name="FileType" length="4" sql-type="int" not-null="false"/>
+    </property>
+    <property name="PlugType" type="Int32">
+      <column name="PlugType" length="4" sql-type="int" not-null="false"/>
+    </property>
+    <property name="Sort" type="Int32">
+      <column name="Sort" length="4" sql-type="int" not-null="false"/>
+    </property>
+    <property name="State" type="bool">
+      <column name="State" length="4" sql-type="int" not-null="false"/>
+    </property>
+    <property name="Version" type="String">
+      <column name="Version" length="32" sql-type="nvarchar" not-null="false"/>
+    </property>
+    <property name="VersionWeb" type="String">
+      <column name="VersionWeb" length="32" sql-type="nvarchar" not-null="false"/>
+    </property>
+    <property name="ShortCut" type="String">
+      <column name="ShortCut" length="32" sql-type="nvarchar" not-null="false"/>
+    </property>
+    <property name="ImageIndex" type="Int32">
+      <column name="ImageIndex" length="4" sql-type="int" not-null="false"/>
+    </property>
+    <property name="GroupHead" type="Int32">
+      <column name="GroupHead" length="4" sql-type="int" not-null="false"/>
+    </property>
+    <property name="RefreshData" type="Int32">
+      <column name="RefreshData" length="4" sql-type="int" not-null="false"/>
+    </property>
+    <property name="SaveData" type="Int32">
+      <column name="SaveData" length="4" sql-type="int" not-null="false"/>
+    </property>
+    <property name="SaveToExcel" type="Int32">
+      <column name="SaveToExcel" length="4" sql-type="int" not-null="false"/>
+    </property>
+    <property name="ImportData" type="Int32">
+      <column name="ImportData" length="4" sql-type="int" not-null="false"/>
+    </property>
+    <property name="ExportData" type="Int32">
+      <column name="ExportData" length="4" sql-type="int" not-null="false"/>
+    </property>
+    <property name="PrintSetup" type="Int32">
+      <column name="PrintSetup" length="4" sql-type="int" not-null="false"/>
+    </property>
+    <property name="PrintFlag" type="Int32">
+      <column name="PrintFlag" length="4" sql-type="int" not-null="false"/>
+    </property>
+    <property name="PrintPreview" type="Int32">
+      <column name="PrintPreview" length="4" sql-type="int" not-null="false"/>
+    </property>
+    <property name="FindValue" type="Int32">
+      <column name="FindValue" length="4" sql-type="int" not-null="false"/>
+    </property>
+    <property name="Remark" type="String">
+      <column name="Remark" length="256" sql-type="nvarchar" not-null="false"/>
+    </property>
+    <property name="OptorCode" type="String">
+      <column name="OptorCode" length="32" sql-type="nvarchar" not-null="false"/>
+    </property>
+    <property name="CreateTime" type="DateTime">
+      <column name="CREATE_TIME" length="8" sql-type="datetime" not-null="true"/>
+    </property>
+    <property name="ModifyTime" type="DateTime">
+      <column name="MODIFIED_TIME" length="8" sql-type="datetime" not-null="false"/>
+    </property>
+    <property name="Deleted" type="bool">
+      <column name="Deleted" length="4" sql-type="int" not-null="false"/>
+    </property>
+    <property name="RunArgs" type="String">
+      <column name="RunArgs" length="128" sql-type="nvarchar" not-null="false"/>
+    </property>
+     
+  </class>
+</hibernate-mapping>

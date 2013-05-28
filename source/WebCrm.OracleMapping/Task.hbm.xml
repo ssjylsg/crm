@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" default-access="property" auto-import="true" default-cascade="none" default-lazy="true">
+  <class name="WebCrm.Model.Task, WebCrm.Model" table="Crm_Task">
+    <id name="Id" type="Int32" unsaved-value="null">
+      <column name="ID" length="4" sql-type="int" not-null="true" unique="true" index="PK_Crm_Task"/>
+      <generator class="assigned" />
+    </id>
+    <many-to-one name="CreateUser" class="WebCrm.Model.OperatorUser, WebCrm.Model">
+      <column name="CreateUser" length="16" sql-type="int" not-null="false"/>
+    </many-to-one>
+    <many-to-one name="AssignUser" class="WebCrm.Model.OperatorUser, WebCrm.Model">
+      <column name="AssignUser" length="16" sql-type="int" not-null="false"/>
+    </many-to-one>
+    <property name="TaskContent" >
+      <column name="TaskContent" />
+    </property>
+    <many-to-one name="TaskProcess" class="WebCrm.Model.CategoryItem, WebCrm.Model">
+      <column name="TaskProcess" length="16" sql-type="int" not-null="false"/>
+    </many-to-one>
+    <property name="StartDate" >
+      <column name="StartDate" />
+    </property>
+    <property name="ExpectationDate" >
+      <column name="ExpectationDate" />
+    </property>
+    <property name="ActualDate" >
+      <column name="ActualDate" />
+    </property>
+    <property name="Remark" >
+      <column name="Remark" />
+    </property>
+    <property name="ExecutionContent" >
+      <column name="ExecutionContent" />
+    </property>
+    <property name="ModifyTime" >
+      <column name="ModifyTime" />
+    </property>
+    <property name="CreateTime" >
+      <column name="CreateTime" />
+    </property>
+    <property name="Deleted" type="bool">
+      <column name="Deleted" length="2" sql-type="smallint" not-null="false"/>
+    </property>
+    <property name="Subject" >
+      <column name="Subject" />
+    </property>
+  </class>
+</hibernate-mapping>

@@ -1,0 +1,15 @@
+﻿<?xml version="1.0"  encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" assembly="WebCX.Model" namespace="WebCX.Model">
+  <class name="WEB_PARK_OUT" table="WEB_PARK_OUT">
+    <id name="ID" column="ID" type="int">
+      <generator class ="native">
+        <param name="sequence">SEQ_WEB_PARKOUT</param>
+      </generator>
+    </id>
+    <property name="PARKCODE" column="PARKCODE" type="string"  />
+    <property name="BEGINTIME" column="BEGINTIME" type="string"  />
+    <property name="ENDTIME" column="ENDTIME" type="string"  />
+    <property name="CHECKEDNUM" column="CHECKEDNUM" type="int"  />
+    <property name="FDATE" column="FDATE" type="string"  />
+  </class>
+</hibernate-mapping>

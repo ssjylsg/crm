@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2">
+  <class name="WebCrm.Model.RoleUser, WebCrm.Model" table="Crm_Role_User">
+   <id name="Id" type="Int32" unsaved-value="0">
+      <column name="id" length="16" sql-type="int" not-null="true" unique="true" index="PK_Role_User"/>
+      <generator class="assigned" />
+    </id>
+    <property name="RoleId" type="int">
+      <column name="RoleId" length="16" sql-type="int" not-null="true"/>
+    </property>
+    <property name="UserId" type="int">
+      <column name="UserId" length="16" sql-type="int" not-null="true"/>
+    </property>
+  </class>
+</hibernate-mapping>

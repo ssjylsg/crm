@@ -1,0 +1,71 @@
+*{ margin:0px; padding:0px; font-size:12px;}
+h1,h2,h3,h4,h5,h6,h7{ font-weight:normal;}
+ul,li,ol,dl,dt,dd{ list-style-type:none;}
+body{ font-family:ËÎÌו, Arial; color:#333333;}
+a{ text-decoration:none; color:#333333;}
+a:hover{ text-decoration:underline;}
+a:visited{ color:#810081;}
+.true{ font-family:Verdana; color:Green; font-weight:bold;}
+.false{ font-family:Verdana; color:Red; font-weight:bold;}
+
+.green{ color:Green;}
+.red{ color:Red;}
+
+#container{ border:1px solid #ccc;}
+#container h3{ color:White; font-weight:bold; height:25px; line-height:25px; background:url(icon.gif); text-indent:5px;}
+#container h3 a{ color:White; font-weight:normal; margin-left:10px;}
+#container table{ width:100%; border-collapse:collapse; border-style:solid;  border-color:#ddd; table-layout:fixed; }
+#container table tr{ height:24px; line-height:24px;}
+#container table th,#container table td{ border:1px solid #ddd;}
+#container table td{ white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+.item{ width:80px; text-align:right;}
+.tr_btn{ text-align:right;}
+.btn{ padding:0px 15px;}
+
+
+#simplemodal-overlay {background-color:#000;}
+#simplemodal-container {background-color:#333; border:8px solid #444; padding:12px;}
+#simplemodal-container .simplemodal-close {
+    background:url(x.png) no-repeat;  /*adjust url as required */
+    width:25px;
+	height:29px;
+	display:inline;
+	z-index:3200;
+	position:absolute;
+	top:-15px;
+	right:-18px;
+	cursor:pointer;
+}
+#sa {
+     background:url(x.png) no-repeat;  /*adjust url as required */
+     width:14px;
+     height:14px;
+     line-height:14px;
+     text-align:center;
+     display:inline;
+     z-index:3200;
+     position:absolute;
+     top:-8px;
+     right:-24px;
+     font-family:Verdana; font-size:11px;
+     color:white;
+     background-color:#F0644E;
+     border:1px solid white;
+     text-decoration:none;
+}
+#AspNetPager1{ width:100%; text-align:center; overflow:hidden; height:100%;}
+#AspNetPager1 div{}
+
+
+#order{width:650px; margin:20px auto; border:1px solid #ccc; padding:5px; font-family:Verdana, ËÎÌו; font-size:11px;}
+#order h1{ height:60px; line-height:60px; font-weight:bold; font-size:15px; text-align:center;}
+
+#order table td{ padding:6px;}
+#order .item{ width:100px; text-align:center; font-weight:bold; border-right:1px solid #ccc;}
+#order .line td{ height:0px; line-height:0px; font-size:0px; border-bottom:1px solid #ccc; background-color:Green; margin:0px; padding:0px;}
+#order .from{ text-align:right; margin-top:30px;}
+#order span{ color:#4682CF;}
+#order p{ margin-top:auto; margin-bottom:auto;}
+
+#toolbar{ border:1px solid #ccc; height:25px; line-height:25px; text-indent:5px; }
+#search{height:25px; border:1px solid #ccc; text-indent:5px; }

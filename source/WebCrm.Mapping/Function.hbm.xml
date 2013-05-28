@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" default-access="property" auto-import="true" default-cascade="none" default-lazy="true">
+  <class name="WebCrm.Model.Function, WebCrm.Model" table="Sys_Function">
+    <id name="Id" type="Int32" unsaved-value="null">
+      <column name="ID" length="4" sql-type="int" not-null="true" unique="true" index="PK_SYS_FUNCTION"/>
+      <generator class="assigned" />
+    </id>
+    <property name="FunctionName" type="String">
+      <column name="FunctionName" length="256" sql-type="nvarchar" not-null="false"/>
+    </property>
+    <property name="FunctionFlag" type="String">
+      <column name="FunctionFlag" length="128" sql-type="nvarchar" not-null="false"/>
+    </property>
+ 
+    <many-to-one name="Parent" class="WebCrm.Model.Function, WebCrm.Model">
+      <column name="ParentID" length="4" sql-type="int" not-null="false"/>
+    </many-to-one> 
+    <property name="PlugID" type="Int32">
+      <column name="PlugID" length="4" sql-type="int" not-null="false"/>
+    </property>
+    <property name="IcoTemplate" type="String">
+      <column name="IcoTemplate" length="256" sql-type="nvarchar" not-null="false"/>
+    </property>
+    <property name="CreateTime" type="DateTime">
+      <column name="CreateTime" length="8" sql-type="datetime" not-null="false"/>
+    </property>
+    <property name="ModifyTime" type="DateTime">
+      <column name="ModifyTime" length="8" sql-type="datetime" not-null="false"/>
+    </property>
+    <many-to-one name="Optor" class="WebCrm.Model.OperatorUser, WebCrm.Model">
+      <column name="OptorID" length="4" sql-type="int" not-null="false"/>
+    </many-to-one>
+ 
+    <property name="Deleted" type="bool">
+      <column name="Deleted" length="4" sql-type="int" not-null="false"/>
+    </property>
+    <property name="Remark" type="String">
+      <column name="Remark" length="256" sql-type="nvarchar" not-null="false"/>
+    </property>
+    <property name="ActionName" type="String">
+      <column name="ActionName" length="64" sql-type="nvarchar" not-null="false"/>
+    </property>
+    <property name="OrderNum" type="Int32">
+      <column name="OrderNum" length="4" sql-type="int" not-null="false"/>
+    </property>
+    <bag name="ChildFunctions" inverse="true">
+      <key column="ParentID"></key>
+      <one-to-many class="WebCrm.Model.Function, WebCrm.Model"></one-to-many>
+    </bag>
+  </class>
+</hibernate-mapping>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2">
+  <class name="WebCrm.Model.Category, WebCrm.Model" table="Crm_Category">
+   <id name="Id" type="Int32" unsaved-value="0">
+      <column name="Id" length="16" sql-type="int" not-null="true" unique="true" index="PK_Category"/>
+      <generator class="assigned" />
+    </id>
+    <property name="Name" type="String">
+      <column name="Name" length="150" sql-type="nvarchar" not-null="false"/>
+    </property>
+    <property name="Description" type="String">
+      <column name="Description" length="150" sql-type="nvarchar" not-null="false"/>
+    </property>
+    <property name="CreateTime">
+      <column name="CreateTime"></column>
+    </property>
+    <property name="ModifyTime">
+      <column name="ModifyTime"></column>
+    </property>
+    <property name="Deleted" type="Boolean">
+       <column name="Deleted"  length="1" sql-type="bit" not-null="false"/>
+    </property>
+    <property name="Value" type="String">
+      <column name="Value" length="50" sql-type="nvarchar" not-null="false"/>
+    </property>
+    <property name="Code">
+      <column name="Code"></column>
+    </property>
+  </class>
+</hibernate-mapping>

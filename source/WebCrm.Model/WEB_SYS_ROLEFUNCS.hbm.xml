@@ -1,0 +1,17 @@
+﻿<?xml version="1.0"  encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" assembly="WebCX.Model" namespace="WebCX.Model">
+  <class name="WEB_SYS_ROLEFUNCS" table="WEB_SYS_ROLEFUNCS">
+    <id name="ID" column="ID" type="int">
+      <generator class ="native">
+        <param name="sequence">SEQ_WEBSYSROLEFUNCS</param>
+      </generator>
+    </id>
+    <property name="ROLE_ID" column="ROLE_ID" type="int"  />
+    <property name="FUNC_ID" column="FUNC_ID" type="int"  />
+    <property name="CREATE_LOGIN_ID" column="CREATE_LOGIN_ID" type="int"  />
+    <property name="CREATE_TIME" column="CREATE_TIME" type="DateTime"  />
+    <property name="MODIFIED_TIME" column="MODIFIED_TIME" type="DateTime"  />
+    <property name="DELETED" column="DELETED" type="int"  />
+    <property name="FTYPE" column="FTYPE" type="int"  />
+  </class>
+</hibernate-mapping>

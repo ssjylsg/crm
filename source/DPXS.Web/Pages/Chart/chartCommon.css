@@ -1,0 +1,69 @@
+﻿body
+{
+    color: #1A3B69;
+}
+a
+{
+     text-decoration:none;
+     color:#1A3B69;     
+}
+a:hover
+{
+     text-decoration:underline; 
+    }
+/*报表小类别*/
+.chartCategory
+{
+    float: left;
+    margin-right: 5px;
+}
+.chartCategory ul
+{
+    list-style: none;
+    padding:0;
+}
+
+.chartCategory ul li
+{
+    padding: 15px 5px;
+    border-bottom: 1px dashed gray;
+}
+
+
+/*报表内容*/
+.charContent
+{
+    float: left;
+}
+
+.tb_condition
+{
+   margin:5px 0 10px;
+}
+
+/*图表内部样式*/
+.sampleTable
+{
+    border-spacing: 0px;
+    border-collapse: collapse;
+    margin: 0px;
+    padding: 2px;
+    width: 718px;
+    vertical-align: top;
+    text-align: left;
+}
+
+td.label
+{
+    margin: 0;
+    padding: 0;
+    text-align: right;
+    width: 168px;
+}
+
+td, .syminfo
+{
+    color: #1A3B69;
+    font-size: 13px;
+}
+

@@ -1,0 +1,63 @@
+
+/* Top */
+.topArea{ margin:0 auto; width:100%; height:80px; background:url(../images/main/top/top_bg.jpg) repeat-x; overflow:hidden;}
+.topArea .logobg{ height:80px; background:url(../images/main/top/logo.gif) no-repeat;}
+
+
+.topCol{}
+.topCol .logo{ float:left; width:250px; height:80px; margin:0px 35px 0 0;}
+.topCol .logo a{ cursor:pointer; display:block;}
+
+.topCol .logoCol2{ float:left; margin:31px 0 0 0; color:#fff;}
+.topCol .logoCol2 .logoCol2A{ float:left;}
+.topCol .logoCol2 .logoCol2A ul{}
+.topCol .logoCol2 .logoCol2A li{ float:left; margin-right:5px; line-height:20px;}
+.topCol .logoCol2 .logoCol2A li a{ padding:0 7px; color:#fff; display:block;}
+.topCol .logoCol2 .logoCol2A li.login{ margin-left:10px;}
+
+
+.topCol .logoCol2 .logoCol2B{ float:right; text-align:right; margin:0 20px;}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.topArea .top1{ height:29px; color:#a2b5cd; padding:0 10px; overflow:hidden;}
+.topArea .top1 .top1L{ float:left; line-height:28px;}
+.topArea .top1 a{ color:#666;}
+.topArea .top1 a:visited{ color:#666; text-decoration:none;}
+.topArea .top1 a:hover{ color:#333; text-decoration:none;}
+
+.topArea .top1 .top1R{ float:right; padding:7px 0 0 0;}
+.topArea .top1 .top1R span{ color:#666; padding:0 8px 0 0;}
+.topArea .top1 .top1R span img{ vertical-align:middle;}
+
+.topArea .top2{ float:left; height:61px; padding:0 10px;}
+.topArea .top2 .logo{ float:left; width:175px; height:61px; margin:0px 20px 0 0; cursor:pointer; display:block;}
+.topArea .top2 .topMenu{ float:left; height:26px; line-height:26px; margin:24px 0 0 0;}
+.topArea .top2 .topMenu ul{}
+.topArea .top2 .topMenu li{ float:left; height:37px; line-height:37px; font-size:14px; font-weight:bold;}
+.topArea .top2 .topMenu li a{ star:expression(this.onFocus=this.blur()); outline:none;}
+.topArea .top2 .topMenu li a:hover{ color:#ff6600;}
+
+.topArea .top2 .topMenu li.m1{ width:2px; background:url(../images/main/top/topMenu.gif) -182px 0px no-repeat;}
+
+.topArea .top2 .topMenu li.m_on{ width:89px; background:url(../images/main/top/topMenu.gif) 0px 0px no-repeat;}
+.topArea .top2 .topMenu li.m_on a{ display:block; color:#fff; cursor:pointer;}
+.topArea .top2 .topMenu li.m_off{ width:83px;}
+.topArea .top2 .topMenu li.m_off a{ display:block; color:#666; cursor:pointer;}
+.topArea .top2 .topMenu li.m_off a:hover{ color:#001c27;}
+
+
+
+

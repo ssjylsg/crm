@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" default-access="property" auto-import="true" default-cascade="none" default-lazy="true">
+  <class name="WebCrm.Model.MessageContent, WebCrm.Model" table="Crm_MessageContent">
+    <id name="Id" type="Int32" unsaved-value="0">
+      <column name="ID" length="16" sql-type="int" not-null="true" unique="true" index="CRM_MessageContent_PK"/>
+      <generator class="assigned" />
+    </id>
+    <property name="MsgContent" type="String">
+      <column name="MsgContent" sql-type="nvarchar" not-null="false"/>
+    </property>
+    <property name="IsSend" type="Boolean">
+      <column name="IsSend"  length="1" sql-type="bit" not-null="false"/>
+    </property>
+    <property name="Deleted" type="Boolean">
+      <column name="Deleted"  length="1" sql-type="bit" not-null="false"/>
+    </property>
+    <property name="CreateTime" type="DateTime">
+      <column name="CreateTime"  />
+    </property>
+    <property name="ModifyTime">
+      <column name="ModifyTime"/>
+    </property>
+    <property name="ToNumber">
+      <column name ="ToNumber"></column>
+    </property>
+    <property name="SendCount">
+      <column name ="SendCount"></column>
+    </property>
+    <many-to-one name="MessageTemplate" class="WebCrm.Model.CategoryItem, WebCrm.Model">
+      <column name="Template" length="16" sql-type="int" not-null="false"/>
+    </many-to-one>
+    <property name="MessageDate">
+      <column name ="MessageDate"></column>
+    </property>
+  </class>
+</hibernate-mapping>

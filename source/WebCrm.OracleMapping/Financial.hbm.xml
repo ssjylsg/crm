@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" default-access="property" auto-import="true" default-cascade="none" default-lazy="true">
+  <class name="WebCrm.Model.Financial, WebCrm.Model" table="Crm_Financial">
+    <id name="Id" type="Int32" unsaved-value="null">
+      <column name="ID" length="4" sql-type="int" not-null="true" unique="true" index="PK_Crm_Financial"/>
+      <generator class="assigned" />
+    </id>
+    <property name="Deleted" type="bool">
+      <column name="Deleted" length="4" sql-type="int" not-null="false"/>
+    </property>
+
+    <many-to-one name="Customer" class="WebCrm.Model.Customer, WebCrm.Model">
+      <column name="CustomerID" length="4" sql-type="int" not-null="false"/>
+    </many-to-one>
+    <property name="Name">
+      <column name="Name"></column>
+    </property>
+    <property name="CustomerName" type="String">
+      <column name="CustomerName" length="100" sql-type="nvarchar" not-null="false"/>
+    </property>
+    <property name="SumPrice" type="Decimal">
+      <column name="SumPrice"  />
+    </property>
+    <property name="FinancialDate" type="DateTime">
+      <column name="FinancialDate" length="3" sql-type="date" not-null="false"/>
+    </property>
+
+    <many-to-one name="ChargePerson" class="WebCrm.Model.OperatorUser, WebCrm.Model">
+      <column name="ChargePerson" length="4" sql-type="int" not-null="false"/>
+    </many-to-one>
+
+    <property name="TreatResult" type="String">
+      <column name="TreatResult" length="1000" sql-type="nvarchar" not-null="false"/>
+    </property>
+    <property name="Remark" type="String">
+      <column name="Remark" length="1000" sql-type="nvarchar" not-null="false"/>
+    </property>
+    <property name="CreateTime" type="DateTime">
+      <column name="CreateTime"  />
+    </property>
+    <property name="ModifyTime">
+      <column name="ModifyTime"/>
+    </property>
+    <property name="State" >
+      <column name="State"/>
+    </property>
+    <property name ="FinancialType" type="WebCrm.Model.FinancialType, WebCrm.Model">
+      <column name="FinancialType"></column>
+    </property>
+    <many-to-one name="Cooperation" class="WebCrm.Model.Cooperation, WebCrm.Model">
+      <column name="Cooperation" length="4" sql-type="int" not-null="false"/>
+    </many-to-one>
+    <many-to-one name="Company" class="WebCrm.Model.Company, WebCrm.Model">
+      <column name="Company" length="4" sql-type="int" not-null="false"/>
+    </many-to-one>
+    <property name="FiledIds">
+      <column name="FiledIds"></column>
+    </property>
+    <many-to-one name="FinancialPayType" class="WebCrm.Model.CategoryItem, WebCrm.Model">
+      <column name="FinancialPayType" length="16" sql-type="int" not-null="false"/>
+    </many-to-one>
+  </class>
+</hibernate-mapping>

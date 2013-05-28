@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" default-access="property" auto-import="true" default-cascade="none" default-lazy="true">
+  <class name="WebCrm.Model.Staff, WebCrm.Model" table="HR_RS_Staff">
+    <id name="Id" type="Int32" unsaved-value="0">
+      <column name="ID" length="4" sql-type="int" not-null="true" unique="true" index="PK_HR_RS_STAFFINFORMATION"/>
+      <generator class="assigned" />
+    </id>
+    <property name="Code" type="String">
+      <column name="Code" length="32" sql-type="nvarchar" not-null="false"/>
+    </property>
+    <property name="RealName" type="String">
+      <column name="RealName" length="32" sql-type="nvarchar" not-null="false"/>
+    </property>
+    <property name="CardNO" type="String">
+      <column name="CardNO" length="64" sql-type="nvarchar" not-null="false"/>
+    </property>
+    <property name="EnglishName" type="String">
+      <column name="EnglishName" length="64" sql-type="nvarchar" not-null="false"/>
+    </property>
+    <property name="WageBooksId" type="Int32">
+      <column name="WageBooksId" length="4" sql-type="int" not-null="false"/>
+    </property>
+    <property name="AccountNature" type="Int32">
+      <column name="AccountNature" length="4" sql-type="int" not-null="false"/>
+    </property>
+    <property name="Sex" type="WebCrm.Model.Sex, WebCrm.Model">
+      <column name="Sex" length="4" sql-type="int" not-null="false"/>
+    </property>
+    <property name="Photo" type="String">
+      <column name="Photo" length="128" sql-type="nvarchar" not-null="false"/>
+    </property>
+    <property name="Birthday" >
+      <column name="Birthday" length="8" sql-type="datetime" not-null="false"/>
+    </property>
+    <property name="Nation" type="String">
+      <column name="Nation" length="32" sql-type="nvarchar" not-null="false"/>
+    </property>
+    <property name="Hometown" type="String">
+      <column name="Hometown" length="32" sql-type="nvarchar" not-null="false"/>
+    </property>
+    <property name="Political" type="String">
+      <column name="Political" length="32" sql-type="nvarchar" not-null="false"/>
+    </property>
+    <property name="Phone" type="String">
+      <column name="Phone" length="32" sql-type="nvarchar" not-null="false"/>
+    </property>
+    <property name="Tel" type="String">
+      <column name="Tel" length="32" sql-type="nvarchar" not-null="false"/>
+    </property>
+    <property name="Fax" type="String">
+      <column name="Fax" length="32" sql-type="nvarchar" not-null="false"/>
+    </property>
+    <property name="Email" type="String">
+      <column name="Email" length="64" sql-type="nvarchar" not-null="false"/>
+    </property>
+    <property name="QQ" type="String">
+      <column name="QQ" length="64" sql-type="nvarchar" not-null="false"/>
+    </property>
+    <property name="MSN" type="String">
+      <column name="MSN" length="64" sql-type="nvarchar" not-null="false"/>
+    </property>
+    <property name="Address" type="String">
+      <column name="Address" length="256" sql-type="nvarchar" not-null="false"/>
+    </property>
+    <property name="OtherAddress" type="String">
+      <column name="OtherAddress" length="256" sql-type="nvarchar" not-null="false"/>
+    </property>
+    <property name="ZipCode" type="String">
+      <column name="ZipCode" length="16" sql-type="nvarchar" not-null="false"/>
+    </property>
+    <property name="HouseInfo" type="Int32">
+      <column name="HouseInfo" length="4" sql-type="int" not-null="false"/>
+    </property>
+    <property name="IsZanZhu" type="Int32">
+      <column name="IsZanZhu" length="4" sql-type="int" not-null="false"/>
+    </property>
+    <property name="ZanZhuZheng" type="String">
+      <column name="ZanZhuZheng" length="64" sql-type="nvarchar" not-null="false"/>
+    </property>
+    <property name="AreaID" type="Int32">
+      <column name="AreaID" length="4" sql-type="int" not-null="false"/>
+    </property>
+    <property name="IDCard" type="String">
+      <column name="IDCard" length="32" sql-type="nvarchar" not-null="false"/>
+    </property>
+    <property name="IsMarried" type="Int32">
+      <column name="IsMarried" length="4" sql-type="int" not-null="false"/>
+    </property>
+    <property name="GraduateSchool" type="String">
+      <column name="GraduateSchool" length="64" sql-type="nvarchar" not-null="false"/>
+    </property>
+    <property name="GraduationTime" >
+      <column name="GraduationTime" length="8" sql-type="datetime" not-null="false"/>
+    </property>
+    <property name="Professional" type="String">
+      <column name="Professional" length="64" sql-type="nvarchar" not-null="false"/>
+    </property>
+    <property name="Degree" type="String">
+      <column name="Degree" length="64" sql-type="nvarchar" not-null="false"/>
+    </property>
+    <property name="SecondDegree" type="String">
+      <column name="SecondDegree" length="64" sql-type="nvarchar" not-null="false"/>
+    </property>
+    <property name="Titles" type="String">
+      <column name="Titles" length="32" sql-type="nvarchar" not-null="false"/>
+    </property>
+    <property name="GetTitlesTime" >
+      <column name="GetTitlesTime" length="8" sql-type="datetime" not-null="false"/>
+    </property>
+    <property name="ForeignLanguage" type="String">
+      <column name="ForeignLanguage" length="128" sql-type="nvarchar" not-null="false"/>
+    </property>
+
+    <many-to-one name="Department" class="WebCrm.Model.Department, WebCrm.Model">
+      <column name="DeptID" length="4" sql-type="int" not-null="false"/>
+    </many-to-one>
+    <many-to-one name="Post" class="WebCrm.Model.Post, WebCrm.Model">
+      <column name="PostID" length="4" sql-type="int" not-null="false"/>
+    </many-to-one>
+
+    <property name="WorkTime" >
+      <column name="WorkTime" length="8" sql-type="datetime" not-null="false"/>
+    </property>
+    <property name="WorkAge" type="Int32">
+      <column name="WorkAge" length="4" sql-type="int" not-null="false"/>
+    </property>
+    <property name="EmployType" type="Int32">
+      <column name="EmployType" length="4" sql-type="int" not-null="false"/>
+    </property>
+    <property name="EntryTime" >
+      <column name="EntryTime" length="8" sql-type="datetime" not-null="false"/>
+    </property>
+    <property name="ProbationaryPeriod" type="Int32">
+      <column name="ProbationaryPeriod" length="4" sql-type="int" not-null="false"/>
+    </property>
+    <property name="ForecastPositiveTime" >
+      <column name="ForecastPositiveTime" length="8" sql-type="datetime" not-null="false"/>
+    </property>
+    <property name="PositiveTime" type="String">
+      <column name="PositiveTime" length="32" sql-type="nvarchar" not-null="false"/>
+    </property>
+    <property name="EnterprisesAge" type="Int32">
+      <column name="EnterprisesAge" length="4" sql-type="int" not-null="false"/>
+    </property>
+    <property name="RetireesDate" type="String">
+      <column name="RetireesDate" length="32" sql-type="nvarchar" not-null="false"/>
+    </property>
+    <property name="JobStatus" type="Int32">
+      <column name="JobStatus" length="4" sql-type="int" not-null="false"/>
+    </property>
+    <property name="Hobby" type="String">
+      <column name="Hobby" length="128" sql-type="nvarchar" not-null="false"/>
+    </property>
+    <property name="Motto" type="String">
+      <column name="Motto" length="128" sql-type="nvarchar" not-null="false"/>
+    </property>
+    <property name="Specialty" type="String">
+      <column name="Specialty" length="128" sql-type="nvarchar" not-null="false"/>
+    </property>
+    <property name="Col1" type="String">
+      <column name="Col1" length="256" sql-type="nvarchar" not-null="false"/>
+    </property>
+    <property name="Col2" type="String">
+      <column name="Col2" length="64" sql-type="nvarchar" not-null="false"/>
+    </property>
+    <property name="Col3" type="String">
+      <column name="Col3" length="64" sql-type="nvarchar" not-null="false"/>
+    </property>
+    <property name="Col4" type="String">
+      <column name="Col4" length="64" sql-type="nvarchar" not-null="false"/>
+    </property>
+    <property name="Col5" type="String">
+      <column name="Col5" length="64" sql-type="nvarchar" not-null="false"/>
+    </property>
+    <property name="Col6" type="String">
+      <column name="Col6" length="64" sql-type="nvarchar" not-null="false"/>
+    </property>
+    <property name="Col7" type="Int32">
+      <column name="Col7" length="4" sql-type="int" not-null="false"/>
+    </property>
+    <property name="Col8" type="Int32">
+      <column name="Col8" length="4" sql-type="int" not-null="false"/>
+    </property>
+    <property name="Col9" type="Byte[]">
+      <column name="Col9" length="16" sql-type="image" not-null="false"/>
+    </property>
+    <property name="CreateTime" >
+      <column name="CreateTime" length="8" sql-type="datetime" not-null="false"/>
+    </property>
+    <property name="ModifyTime" >
+      <column name="ModifyTime" length="8" sql-type="datetime" not-null="false"/>
+    </property>
+    <property name="OptorName" type="String">
+      <column name="Optor" length="32" sql-type="nvarchar" not-null="false"/>
+    </property>
+    <property name="Remark" type="String">
+      <column name="Remark" length="512" sql-type="nvarchar" not-null="false"/>
+    </property>
+    <property name="Deleted" type="bool">
+      <column name="Deleted"  length="4" sql-type="int" not-null="false"/>
+    </property>
+
+    <many-to-one name="Company" class="WebCrm.Model.Company, WebCrm.Model">
+      <column name="CompanyID" length="4" sql-type="int" not-null="false"/>
+    </many-to-one>
+
+  </class>
+</hibernate-mapping>

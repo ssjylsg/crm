@@ -1,0 +1,26 @@
+﻿<?xml version="1.0"  encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" assembly="WebCX.Model" namespace="WebCX.Model">
+  <class name="WEB_LOGIN_INFO" table="WEB_LOGIN_INFO">
+    <id name="ID" column="ID" type="int">
+      <generator class ="native">
+        <param name="sequence">SEQ_WEBLOGINID</param>        
+      </generator>
+    </id>
+    <property name="LOGIN_NAME" column="LOGIN_NAME" type="string"  />
+    <property name="LOGIN_REALNAME" column="LOGIN_REALNAME" type="string"  />
+    <property name="LOGIN_PASS" column="LOGIN_PASS" type="string"  />
+    <property name="USE_FLAG" column="USE_FLAG" type="int"  />
+    <property name="ADMIN_FLAG" column="ADMIN_FLAG" type="int"  />
+    <property name="EMAIL" column="EMAIL" type="string"  />
+    <property name="MOBILE" column="MOBILE" type="string"  />
+    <property name="REMARK" column="REMARK" type="string"  />
+    <property name="LOGIN_COUNT" column="LOGIN_COUNT" type="int"  />
+    <property name="LAST_IP" column="LAST_IP" type="string"  />
+    <property name="LAST_LOGIN_TIME" column="LAST_LOGIN_TIME" type="DateTime"  />
+    <property name="CREATE_LOGIN_ID" column="CREATE_LOGIN_ID" type="int"  />
+    <property name="CREATE_TIME" column="CREATE_TIME" type="DateTime"  />
+    <property name="MODIFIED_TIME" column="MODIFIED_TIME" type="DateTime"  />
+    <property name="DELETED" column="DELETED" type="int"  />
+
+  </class>
+</hibernate-mapping>

@@ -1,0 +1,20 @@
+html{height:100%;margin:0;padding:0;}
+body{height:100%;margin:0;padding:0;}
+div,ul,li,h3,form,input{margin:0;padding:0;}
+ul,li{list-style:none;}
+body{ font-size:12px;font-family: Arial, Verdana, "simsun",sans-serif; color:#666; position:relative;}
+.ui-tabs-panel{width:960px; margin-top:15px; }
+h3{font-size:14px;font-size:100%;font-weight:bold;}
+.carea{width:960px; margin:0 auto; overflow:hidden;}
+.search_head{overflow:hidden; padding-bottom:10px; padding-top:10px;  line-height:35px; border:1px solid #369fe5; border-bottom:0;border-radius:2px 2px 0 0;width:958px;}
+.sh_title{ float:left;padding-left:25px; margin-left:25px; font-size:14px; color:#333; }
+.info_input{ border:1px solid #369fe5;}
+.info_input li{ border-bottom:1px dotted #d6dde3; overflow:hidden; zoom:1;}
+.info_input li b{ float:left; width:140px; text-align:right; height:40px; line-height:40px; padding-right:10px;}
+.info_input li b i{ color:#f00; font-family:simsun; margin-right:5px; font-weight:normal;}
+.ii_conarea{ line-height:40px; overflow:hidden;}
+.ii_conarea .ful{line-height:19px;border:1px solid #d6dde3; padding-left:5px; margin-top:6px;}
+.ii_conarea .loading_img{line-height:19px; padding-left:5px; margin-top:6px;}
+.none{display:none;}
+.btn_sub{width: 100px; height: 30px;cursor: pointer; margin-top: 20px; margin-left: 70px;}
+

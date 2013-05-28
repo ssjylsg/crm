@@ -1,0 +1,113 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{A301FC86-6225-4C7B-BFF3-F828CE516D9D}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>WebCrm.Dao</RootNamespace>
+    <AssemblyName>WebCrm.Dao</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>Svn</SccProjectName>
+    <SccLocalPath>Svn</SccLocalPath>
+    <SccAuxPath>Svn</SccAuxPath>
+    <SccProvider>SubversionScc</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Iesi.Collections, Version=1.0.1.0, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
+      <HintPath>..\packages\Iesi.Collections.3.2.0.4000\lib\Net35\Iesi.Collections.dll</HintPath>
+    </Reference>
+    <Reference Include="NHibernate, Version=3.3.1.4000, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
+      <HintPath>..\packages\NHibernate.3.3.3.4000\lib\Net35\NHibernate.dll</HintPath>
+    </Reference>
+    <Reference Include="NHibernate.Caches.SysCache">
+      <HintPath>..\packages\NHibernate.Caches.SysCache.3.3.3.4000\lib\net35\NHibernate.Caches.SysCache.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AdvertisingRepository.cs" />
+    <Compile Include="ChartRepository.cs" />
+    <Compile Include="CommonRepository.cs" />
+    <Compile Include="CompanyActionRepository.cs" />
+    <Compile Include="CompanyRepository.cs" />
+    <Compile Include="ContractRepository.cs" />
+    <Compile Include="CooperationRepository.cs" />
+    <Compile Include="CustomerAgreementRepository.cs" />
+    <Compile Include="CustomerContactInfoRepository.cs" />
+    <Compile Include="CustomerCorpInfoRepository.cs" />
+    <Compile Include="CrmDictionaryRepository.cs" />
+    <Compile Include="CustomerVisitRecordRepository.cs" />
+    <Compile Include="CategoryItemRepository.cs" />
+    <Compile Include="CategoryRepository.cs" />
+    <Compile Include="CustomerInfoRepository.cs" />
+    <Compile Include="CustomerRepository.cs" />
+    <Compile Include="CustormerConsumRecordRepository.cs" />
+    <Compile Include="DaoHelper.cs" />
+    <Compile Include="DepartmentRepository.cs" />
+    <Compile Include="DiscussCustomerRecordRepository.cs" />
+    <Compile Include="FileRepository.cs" />
+    <Compile Include="FinancialRepository.cs" />
+    <Compile Include="FunctionRepository.cs" />
+    <Compile Include="HolidayRepository.cs" />
+    <Compile Include="MessageContentRepository.cs" />
+    <Compile Include="PlugRepository.cs" />
+    <Compile Include="RolePlugRepository.cs" />
+    <Compile Include="SuggestRepository.cs" />
+    <Compile Include="MembershipCardRepository.cs" />
+    <Compile Include="NHelper.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RoleRepository.cs" />
+    <Compile Include="TaskRepository.cs" />
+    <Compile Include="TemplateRepository.cs" />
+    <Compile Include="UserInfoRepository.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\WebCrm.Framework\WebCrm.Framework.csproj">
+      <Project>{8BA235A7-0B55-41D0-9E48-D3A6FAB610E8}</Project>
+      <Name>WebCrm.Framework</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WebCrm.Model\WebCrm.Model.csproj">
+      <Project>{BEE716A5-EF7A-4DC5-8522-214E054EB868}</Project>
+      <Name>WebCrm.Model</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

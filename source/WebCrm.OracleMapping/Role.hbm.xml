@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" default-access="property" auto-import="true" default-cascade="none" default-lazy="true">
+  <class name="WebCrm.Model.Role, WebCrm.Model" table="Sys_Role">
+    <id name="Id" type="Int32" unsaved-value="null">
+      <column name="ID" length="4" sql-type="int" not-null="true" unique="true" index="PK_SYS_ROLE"/>
+      <generator class="assigned" />
+    </id>
+    <property name="RoleName" type="String">
+      <column name="RoleName" length="64" sql-type="nvarchar" not-null="false"/>
+    </property>
+
+    <property name="Remark" type="String">
+      <column name="Remark" length="256" sql-type="nvarchar" not-null="false"/>
+    </property>
+
+    <property name="CreateTime" >
+      <column name="CreateTime" sql-type="timestamp"/>
+    </property>
+    <property name="ModifyTime" >
+      <column name="modifytime" sql-type="timestamp" />
+    </property>
+    <many-to-one name="Optor" class="WebCrm.Model.OperatorUser, WebCrm.Model">
+      <column name="OptorID" length="4" sql-type="int" not-null="false"/>
+    </many-to-one>
+    <property name="Deleted" type="bool">
+      <column name="Deleted" length="4" sql-type="int" not-null="false"/>
+    </property>
+    <many-to-one name="Company" class="WebCrm.Model.Company, WebCrm.Model">
+      <column name="CompanyID" length="4" sql-type="int" not-null="false"/>
+    </many-to-one>
+    <property name="SystemName">
+      <column name="SystemName"></column>
+    </property>
+   
+  </class>
+</hibernate-mapping>

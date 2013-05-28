@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2">
+  <class name="WebCrm.Model.MembershipCard, WebCrm.Model" table="Crm_MembershipCard">
+   <id name="Id" type="Int32" unsaved-value="0">
+      <column name="ID" length="16" sql-type="int" not-null="true" unique="true" index="PK_MembershipCard"/>
+      <generator class="assigned" />
+    </id>
+    <property name="CardCode" type="String">
+      <column name="CardCode" length="20" sql-type="nchar" not-null="true"/>
+    </property>
+    <property name="Description" type="String">
+      <column name="Description" length="50" sql-type="nvarchar" not-null="false"/>
+    </property>
+    <property name="ValidDate" type="DateTime">
+      <column name="ValidDate" length="3" sql-type="date" not-null="false"/>
+    </property>
+    <property name="Deleted" type="Boolean">
+       <column name="Deleted"  length="1" sql-type="bit" not-null="false"/>
+    </property>
+    <many-to-one name="CardType" class="WebCrm.Model.CategoryItem, WebCrm.Model">
+      <column name="CardType" length="16" sql-type="int" not-null="false"/>
+    </many-to-one>
+    <property name="CreateTime">
+      <column name="CreateTime"></column>
+    </property>
+    <property name="ModifyTime">
+      <column name="ModifyTime"></column>
+    </property>
+    <many-to-one name="Company" class="WebCrm.Model.Company, WebCrm.Model">
+      <column name="Company" length="4" sql-type="int" not-null="false"/>
+    </many-to-one>
+  </class>
+</hibernate-mapping>

@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" default-access="property" auto-import="true" default-cascade="none" default-lazy="true">
+  <class name="WebCrm.Model.Department, WebCrm.Model" table="Sys_Dept">
+    <id name="Id" type="Int32" unsaved-value="null">
+      <column name="ID" length="4" sql-type="int" not-null="true" unique="true" index="PK_SYS_DEPT"/>
+      <generator class="assigned" />
+    </id> 
+    <many-to-one name="Parent" class="WebCrm.Model.Department, WebCrm.Model">
+      <column name="ParentID" length="4" sql-type="int" not-null="false"/>
+    </many-to-one>
+    <property name="DeptCode" type="String">
+      <column name="DeptCode" length="32" sql-type="nvarchar" not-null="true"/>
+    </property>
+    <property name="DeptShortCode" type="String">
+      <column name="DeptShortCode" length="32" sql-type="nvarchar" not-null="true"/>
+    </property>
+    <property name="DeptName" type="String">
+      <column name="DeptName" length="256" sql-type="nvarchar" not-null="false"/>
+    </property>
+    <property name="RealName" type="String">
+      <column name="RealName" length="64" sql-type="nvarchar" not-null="false"/>
+    </property>
+    <property name="PYCode" type="String">
+      <column name="PYCode" length="64" sql-type="nvarchar" not-null="false"/>
+    </property>
+    <property name="DeptLeader" type="String">
+      <column name="DeptLeader" length="64" sql-type="nvarchar" not-null="false"/>
+    </property>
+    <property name="TelNo" type="String">
+      <column name="TelNo" length="64" sql-type="nvarchar" not-null="false"/>
+    </property>
+    <property name="FaxNo" type="String">
+      <column name="FaxNo" length="64" sql-type="nvarchar" not-null="false"/>
+    </property>
+    <property name="Email" type="String">
+      <column name="Email" length="128" sql-type="nvarchar" not-null="false"/>
+    </property>
+    <property name="Sort" type="Int32">
+      <column name="Sort" length="4" sql-type="int" not-null="false"/>
+    </property>
+    <property name="Remark" type="String">
+      <column name="Remark" length="256" sql-type="nvarchar" not-null="false"/>
+    </property>
+    <property name="OptorCode" type="String">
+      <column name="OptorCode" length="32" sql-type="nvarchar" not-null="false"/>
+    </property>
+    <property name="CreateTime"  >
+      <column name="CREATE_TIME" length="8" sql-type="datetime" not-null="true"/>
+    </property>
+    <property name="ModifyTime"  >
+      <column name="MODIFIED_TIME" length="8" sql-type="datetime" not-null="false"/>
+    </property>
+    <property name="Deleted" type="bool">
+      <column name="DELETED" length="4" sql-type="int" not-null="true"/>
+    </property>
+    <property name="ChartViewType" type="Int32">
+      <column name="ChartViewType" length="4" sql-type="int" not-null="false"/>
+    </property>
+ 
+    <many-to-one name="Company" class="WebCrm.Model.Company, WebCrm.Model">
+      <column name="CompanyID" length="4" sql-type="int" not-null="false"/>
+    </many-to-one>
+    <bag name="ChildDept" inverse="true" order-by="CREATE_TIME">
+      <key column="ParentID"></key>
+      <one-to-many class="WebCrm.Model.Department, WebCrm.Model"></one-to-many>
+    </bag>
+  </class>
+</hibernate-mapping>

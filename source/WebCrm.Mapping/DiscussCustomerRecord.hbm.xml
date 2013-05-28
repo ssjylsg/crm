@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" default-access="property" auto-import="true" default-cascade="none" default-lazy="true">
+  <class name="WebCrm.Model.DiscussCustomerRecord, WebCrm.Model" table="Crm_DiscussCustomerRecord">
+   <id name="Id" type="Int32" unsaved-value="0">
+      <column name="ID" length="16" sql-type="int" not-null="true" unique="true" index="PK_DiscussCustomerRecord"/>
+     <generator class="assigned" />
+    </id>
+    <many-to-one name="Customer" class="WebCrm.Model.Customer, WebCrm.Model">
+      <column name="CustomerID" length="16" sql-type="int" not-null="false"/>
+    </many-to-one>
+    <property name="Content" type="String">
+      <column name="Content" sql-type="nvarchar" not-null="false"/>
+    </property>
+    <property name="DiscussDate" type="DateTime">
+      <column name="DiscussDate" length="3" sql-type="date" not-null="false"/>
+    </property>
+    <many-to-one name="BussinessPerson" class="WebCrm.Model.Staff, WebCrm.Model">
+      <column name="BussinessPersonId" length="16" sql-type="int" not-null="false"/>
+    </many-to-one>
+    <property name="OtherPersonName" type="String">
+      <column name="OtherPersonName" length="1000" sql-type="nvarchar" not-null="false"/>
+    </property>
+    <property name="State" type="Int16">
+      <column name="`State`" length="2" sql-type="smallint" not-null="false"/>
+    </property>
+
+    <many-to-one name="OldBussinessPerson" class="WebCrm.Model.Staff, WebCrm.Model">
+      <column name="OldBussinessPersonId" length="16" sql-type="int" not-null="false"/>
+    </many-to-one>
+    <property name="FileIds" type="String">
+      <column name="FileIds" length="1000" sql-type="nvarchar" not-null="false"/>
+    </property>
+  </class>
+</hibernate-mapping>

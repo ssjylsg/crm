@@ -1,0 +1,58 @@
+/*左边*/
+.webBg{ background:url(../images/main/left/left_bg.jpg) left repeat-y; color:#005590;}
+
+.leftArea{ float:left; margin:0px; width:191px;}
+.leftArea .l_top1{ height:31px; background:url(../images/main/left/title_bg.gif) 0px 0px no-repeat;}
+
+
+
+/*一级导航*/
+.leftArea .l_menu_1{ width:191px; text-align:left;}
+.leftArea .l_menu_1 h3{ font-weight:bold; margin:0px; padding:0px;height:26px; line-height:26px; cursor:pointer;}
+.leftArea .l_menu_1 a{  padding-left:45px; color:#333; display:block;}
+
+
+.leftArea .l_menu_1 .menu_1_on{ background:url(../images/main/left/title_bg.gif) 0px -60px no-repeat;}
+.leftArea .l_menu_1 .menu_1_off{ background:url(../images/main/left/title_bg.gif) 0px -205px no-repeat;}
+
+/*二、三级导航*/
+.leftArea .l_menu_1 li a{ height:21px; line-height:21px; margin:2px 0; color:#333;}
+.leftArea .l_menu_1 li a:hover{ color:#ff6600;}
+
+
+.leftArea .l_menu_1 .menu_2_on a{ padding:0 0 0 45px; color:#ff6600; display:block; background:url(../images/main/left/title_bg.gif) 0px -250px no-repeat;}
+.leftArea .l_menu_1 .menu_2_on a:hover{ text-decoration:none;}
+
+.leftArea .l_menu_1 .menu_2_off a{ padding:0 0 0 45px; background:url(../images/main/left/title_bg.gif) 0px -100px no-repeat; display:block;}
+.leftArea .l_menu_1 .menu_2_off a:hover{ text-decoration:none; background:url(../images/main/left/title_bg.gif) 0px -250px no-repeat;}
+
+.leftArea .l_menu_1 .menu_3_off a{ padding:0 0 0 55px; background:url(../images/main/left/title_bg.gif) 0px -135px no-repeat; display:block;}
+.leftArea .l_menu_1 .menu_3_off a:hover{ text-decoration:none; background:url(../images/main/left/title_bg.gif) 0px -135px no-repeat;}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

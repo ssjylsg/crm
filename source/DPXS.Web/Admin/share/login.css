@@ -1,0 +1,46 @@
+@charset "utf-8";
+/* CSS Document */
+body{ font:"宋体"; font-size:12px; margin:0; padding:0; }
+a:link{color:#333;text-decoration:none;}
+a:visited{color:#333;text-decoration:none;}
+a:hover  {color:#FF0000;text-decoration:none;}
+a:active {color:#c00;text-decoration:none;}
+a{text-decoration:none; cursor:hand;}
+a img{border: none;}
+form,p,span,div,ol,h1,h2,h3,h4,h5,h6,img,select,input{margin:0;padding:0;}
+ul,li{margin:0; padding:0; list-style:none;}
+select,input{vertical-align:middle; }
+
+.loginbg{ margin:0 auto; width:100%; height:600px; background:url(../images/login/bg.jpg) repeat-x;}
+.content{ margin:0 auto; width:960px; height:600px; background:url(../images/login/content_bg.jpg) no-repeat; overflow:hidden;}
+
+.login_box{ margin:300px 0 0 0;}
+.login_box .bd{ margin:0 0 0 500px; width:350px; height:140px;}
+
+.login_box .field{ padding:5px 0 0 0;}
+.login_box .field img{ vertical-align:middle;}
+.login_box .field label{ width:66px; text-align:right; font-weight:bold; color:#FFF;}
+.login_box .field .login-text{ font-family:Tahoma, Geneva, sans-serif; width:180px; height:18px; line-height:18px; padding:3px; vertical-align:middle; border:0px; background-color:#FFF;}
+.login_box .field .login-yzm{ font-family:Tahoma, Geneva, sans-serif; width:80px; height:18px; line-height:18px; padding:3px; vertical-align:middle; border:0px; background-color:#FFF;}
+
+.login_box .submit{ padding:10px 0 0 58px;}
+.login_box .J_Submit{ width:85px; height:27px; line-height:24px; font-size:12px; font-weight:bold; border:0px; background:url(../images/login/J_Submit.png) no-repeat; cursor:pointer;}
+
+.footer{ margin:0 0 0 565px; width:350px; line-height:23px; color:#929292;}
+
+
+
+.shortcut
+{
+    color:White;
+    font-size:11px;
+    cursor:pointer;   
+}
+.shortcur:hover
+{
+    text-decoration:underline;
+}
+
+
+
+

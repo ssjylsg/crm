@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2">
+  <class name="WebCrm.Model.FileAttachement, WebCrm.Model" table="Crm_FileAttachement">
+    <id name="Id" type="int">
+      <column name="Id" length="16" sql-type="int" not-null="true" unique="true" index="PK_FileAttachement"/>
+      <generator class="assigned" />
+    </id>
+    <property name="FileName" type="String">
+      <column name="FileName" length="500" sql-type="nvarchar" not-null="false"/>
+    </property>
+    <property name="FileSize" type="Int32">
+      <column name="FileSize" length="4" sql-type="int" not-null="true"/>
+    </property>
+    <property name="Extension" type="String">
+      <column name="Extension" length="10" sql-type="nchar" not-null="true"/>
+    </property>
+    <property name="FilePath" type="String">
+      <column name="FilePath" length="150" sql-type="nvarchar" not-null="true"/>
+    </property>
+    <property name="Deleted" type="Boolean">
+       <column name="Deleted"  length="1" sql-type="bit" not-null="false"/>
+    </property>
+    <property name="FileGuidId">
+      <column name="FileGuidId"></column>
+    </property>
+  </class>
+</hibernate-mapping>

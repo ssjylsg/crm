@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" default-access="property" auto-import="true" default-cascade="none" default-lazy="true">
+  <class name="WebCrm.Model.Advertising, WebCrm.Model" table="Crm_Advertising">
+   <id name="Id" type="Int32" unsaved-value="0">
+      <column name="ID" length="16" sql-type="int" not-null="true" unique="true" index="PK_Advertising"/>
+     <generator class="assigned" />
+    </id>
+    <property name="Content" type="String">
+      <column name="Content" sql-type="nvarchar" not-null="false"/>
+    </property>
+    <property name="DeliveryDate" type="DateTime">
+      <column name="DeliveryDate" length="3" sql-type="date" not-null="false"/>
+    </property> 
+    <many-to-one name="Channel" class="WebCrm.Model.CategoryItem, WebCrm.Model">
+      <column name="ChannelId" length="16" sql-type="int" not-null="false"/>
+    </many-to-one>
+    <property name="Free" type="Double">
+      <column name="Free" length="8" sql-type="float" not-null="false"/>
+    </property>
+    <property name="State" type="Int16">
+      <column name="`State`" length="2" sql-type="smallint" not-null="false"/>
+    </property>
+    <property name="Evaluate" type="Int16">
+      <column name="Evaluate" length="2" sql-type="smallint" not-null="false"/>
+    </property>
+    <property name="Name" type="String">
+      <column name="Name" sql-type="nvarchar" not-null="false"/>
+    </property>
+    <property name="WorkName" type="String">
+      <column name="WorkName" sql-type="nvarchar" not-null="false"/>
+    </property>
+    <property name="Remark" type="String">
+      <column name="Remark" sql-type="nvarchar" not-null="false"/>
+    </property>
+    <property name="Deleted" type="Boolean">
+       <column name="Deleted"  length="1" sql-type="bit" not-null="false"/>
+    </property>
+  </class>
+</hibernate-mapping>

@@ -1,0 +1,200 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{BEE716A5-EF7A-4DC5-8522-214E054EB868}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>WebCrm.Model</RootNamespace>
+    <AssemblyName>WebCrm.Model</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>Svn</SccProjectName>
+    <SccLocalPath>Svn</SccLocalPath>
+    <SccAuxPath>Svn</SccAuxPath>
+    <SccProvider>SubversionScc</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Aspose.Cells, Version=7.4.3.0, Culture=neutral, PublicKeyToken=716fcc553a201e56, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Aspose.Cells.7.4.3\lib\net40-client\Aspose.Cells.dll</HintPath>
+    </Reference>
+    <Reference Include="Aspose.Words">
+      <HintPath>..\packages\Aspose.Cells.7.4.3\lib\net40-client\Aspose.Words.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Enums\Educational.cs" />
+    <Compile Include="Models\Advertising.cs" />
+    <Compile Include="Models\CompanyAction.cs" />
+    <Compile Include="Models\Cooperation.cs" />
+    <Compile Include="Models\CustomerAgreement.cs" />
+    <Compile Include="Models\CustomerContactInfo.cs" />
+    <Compile Include="Models\CustomerCorpInfo.cs" />
+    <Compile Include="Models\CrmDictionary.cs" />
+    <Compile Include="Models\Feedback.cs" />
+    <Compile Include="Models\Financial.cs" />
+    <Compile Include="Models\Meeting.cs" />
+    <Compile Include="Models\MessageContent.cs" />
+    <Compile Include="Models\News.cs" />
+    <Compile Include="Models\PhoneCall.cs" />
+    <Compile Include="Models\SystemModels\Company.cs" />
+    <Compile Include="Models\Contract.cs" />
+    <Compile Include="Models\CrmEntity.cs" />
+    <Compile Include="Models\Category.cs" />
+    <Compile Include="Models\CategoryItem.cs" />
+    <Compile Include="Models\Customer.cs" />
+    <Compile Include="Models\CustomerInfo.cs" />
+    <Compile Include="Models\CustomerVisitRecord.cs" />
+    <Compile Include="Models\CustormerConsumRecord.cs" />
+    <Compile Include="Models\SystemModels\Department.cs" />
+    <Compile Include="Models\DiscussCustomerRecord.cs" />
+    <Compile Include="Models\SystemModels\FileAttachement.cs" />
+    <Compile Include="Models\Holiday.cs" />
+    <Compile Include="Models\MembershipCard.cs" />
+    <Compile Include="Models\SystemModels\Function.cs" />
+    <Compile Include="Models\SystemModels\Operator.cs" />
+    <Compile Include="Models\OprHist.cs" />
+    <Compile Include="Models\Permission.cs" />
+    <Compile Include="Models\Permission_Role.cs" />
+    <Compile Include="Models\Permission_UserInfo.cs" />
+    <Compile Include="Models\SystemModels\Plug.cs" />
+    <Compile Include="Models\SystemModels\Post.cs" />
+    <Compile Include="Models\Role_User.cs" />
+    <Compile Include="Models\SpendScore.cs" />
+    <Compile Include="Models\Suggest.cs" />
+    <Compile Include="Models\SystemModels\Role.cs" />
+    <Compile Include="Models\SystemModels\RoleOperator.cs" />
+    <Compile Include="Models\SystemModels\RolePlug.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Models\SystemModels\Staff.cs" />
+    <Compile Include="Models\SystemModels\OperatorUser.cs" />
+    <Compile Include="Models\SystemModels\UserPost.cs" />
+    <Compile Include="Models\Task.cs" />
+    <Compile Include="Models\Template.cs" />
+    <Compile Include="QueryModel\CustomerContactQuery.cs" />
+    <Compile Include="QueryModel\DataResult.cs" />
+    <Compile Include="QueryModel\PageQuery.cs" />
+    <Compile Include="Repositories\IAdvertisingRepository.cs" />
+    <Compile Include="Repositories\ICategoryItemRepository.cs" />
+    <Compile Include="Repositories\ICategoryRepository.cs" />
+    <Compile Include="Repositories\IChartRepository.cs" />
+    <Compile Include="Repositories\ICommonRepository.cs" />
+    <Compile Include="Repositories\ICompanyActionRepository.cs" />
+    <Compile Include="Repositories\ICompanyRepository.cs" />
+    <Compile Include="Repositories\IContractRepository.cs" />
+    <Compile Include="Repositories\ICooperationRepository.cs" />
+    <Compile Include="Repositories\ICustomerAgreementRepository.cs" />
+    <Compile Include="Repositories\ICustomerContactInfoRepository.cs" />
+    <Compile Include="Repositories\ICustomerCorpInfoRepository.cs" />
+    <Compile Include="Repositories\ICrmDictionaryRepository.cs" />
+    <Compile Include="Repositories\ICustomerInfoRepository.cs" />
+    <Compile Include="Repositories\ICustomerRepository.cs" />
+    <Compile Include="Repositories\ICustomerVisitRecordRepository.cs" />
+    <Compile Include="Repositories\ICustormerConsumRecordRepository.cs" />
+    <Compile Include="Repositories\IDepartmentRepository.cs" />
+    <Compile Include="Repositories\IDiscussCustomerRecordRepository.cs" />
+    <Compile Include="Repositories\IFileRepository.cs" />
+    <Compile Include="Repositories\IFinancialRepository.cs" />
+    <Compile Include="Repositories\IFunctionRepository.cs" />
+    <Compile Include="Repositories\IHolidayRepository.cs" />
+    <Compile Include="Repositories\IMembershipCardRepository.cs" />
+    <Compile Include="Repositories\IMessageContentRepository.cs" />
+    <Compile Include="Repositories\IPlugRepository.cs" />
+    <Compile Include="Repositories\IRolePlugRepository.cs" />
+    <Compile Include="Repositories\IRoleRepository.cs" />
+    <Compile Include="Repositories\ISuggestRepository.cs" />
+    <Compile Include="Repositories\ITaskRepository.cs" />
+    <Compile Include="Repositories\ITemplateRepository.cs" />
+    <Compile Include="Repositories\IUserInfoRepository.cs" />
+    <Compile Include="Services\IAdvertisingService.cs" />
+    <Compile Include="Services\IChartService.cs" />
+    <Compile Include="Services\ICompanyActionService.cs" />
+    <Compile Include="Services\ICompanyService.cs" />
+    <Compile Include="Services\ICategoryItemService.cs" />
+    <Compile Include="Services\ICategoryService.cs" />
+    <Compile Include="Services\ICommonService.cs" />
+    <Compile Include="Services\IContractService.cs" />
+    <Compile Include="Services\ICooperationService.cs" />
+    <Compile Include="Services\ICustomerAgreementService.cs" />
+    <Compile Include="Services\ICustomerContactInfoService.cs" />
+    <Compile Include="Services\ICustomerCorpInfoService.cs" />
+    <Compile Include="Services\ICrmDictionaryService.cs" />
+    <Compile Include="Services\ICustomerInfoService.cs" />
+    <Compile Include="Services\ICustomerService.cs" />
+    <Compile Include="Services\ICustomerVisitRecordService.cs" />
+    <Compile Include="Services\ICustormerConsumRecordService.cs" />
+    <Compile Include="Services\IDeptService.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\IDiscussCustomerRecordService.cs" />
+    <Compile Include="Services\IFileService.cs" />
+    <Compile Include="Services\IFinancialService.cs" />
+    <Compile Include="Services\IFunctionService.cs" />
+    <Compile Include="Services\IHolidayService.cs" />
+    <Compile Include="Services\IBaseRequestService.cs" />
+    <Compile Include="Services\IMembershipCardService.cs" />
+    <Compile Include="Services\IMessageContentService.cs" />
+    <Compile Include="Services\IMessageService.cs" />
+    <Compile Include="Services\IOprHistService.cs" />
+    <Compile Include="Services\IPlugService.cs" />
+    <Compile Include="Services\IPostService.cs" />
+    <Compile Include="Services\IRolePlugService.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Services\IRoleService.cs" />
+    <Compile Include="Services\ISuggestService.cs" />
+    <Compile Include="Services\ITaskService.cs" />
+    <Compile Include="Services\ITemplateService.cs" />
+    <Compile Include="Services\IUserInfoService.cs" />
+    <Compile Include="Utils\AsposeCellsHelper.cs" />
+    <Compile Include="Utils\StringHelper.cs" />
+    <Compile Include="SysConfig.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\WebCrm.Framework\WebCrm.Framework.csproj">
+      <Project>{8BA235A7-0B55-41D0-9E48-D3A6FAB610E8}</Project>
+      <Name>WebCrm.Framework</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
