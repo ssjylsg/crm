@@ -3,7 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.Linq;
 using NHibernate;
+using NHibernate.Linq;
 using NHibernate.Criterion;
 using WebCrm.Framework.Model;
 
@@ -226,6 +228,11 @@ namespace WebCrm.Framework.Repositories
             }
 
 
+        }
+
+        public IQueryable<TEntity> Query()
+        {
+            return this.GetSession().Query<TEntity>();
         }
     }
     public abstract class BaseNhibreateRepository<TEntity> : NhibreateRepository<TEntity, int> where TEntity : BaseEntity

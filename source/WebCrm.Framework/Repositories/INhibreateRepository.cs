@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using NHibernate;
 using WebCrm.Framework.Model;
 
@@ -64,6 +65,8 @@ namespace WebCrm.Framework.Repositories
         /// <param name="defaultValue"></param>
         /// <returns></returns>
         int GenerateNewId(string keyName, int defaultValue = 1);
+
+        IQueryable<TEntity> Query();
     }
     public interface IBaseNhibreateRepository<TEntity> : INhibreateRepository<TEntity, int> where TEntity : BaseEntity
     {

@@ -39,6 +39,7 @@ namespace WebCrm.Framework
             _bulider.RegisterType<ServiceInterceptor>().As<IInterceptor>();
             
             DependencyResolver.Container = this._bulider.Build();
+            
             return this;
         }
         public ApplicationConfig Log4net(string filePath)
@@ -61,8 +62,10 @@ namespace WebCrm.Framework
         /// <param name="assemblies"></param>
         private void RegisterAssebbly(params  System.Reflection.Assembly[] assemblies)
         {
-            _bulider.RegisterAssemblyTypes(assemblies).AsImplementedInterfaces().SingleInstance().
-                EnableClassInterceptors();
+            _bulider.RegisterAssemblyTypes(assemblies)
+                .AsImplementedInterfaces()
+                .SingleInstance()
+                .EnableClassInterceptors();
         } 
     }
 }
